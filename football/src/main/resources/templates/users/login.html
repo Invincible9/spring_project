@@ -16,16 +16,16 @@
             <div class="card card-body bg-light mt-5">
                 <h2>Login</h2>
                 <p>Please fill in your credentials to log in</p>
-                <form th:action=@{/users/login} method="POST">
+                <form th:action="@{/users/login}" method="POST">
                     <div class="form-group">
                         <label for="email">Email: <sup>*</sup></label>
-                        <input type="email" id="email" name="email" class="form-control form-control-lg" value="">
-                        <span class="invalid-feedback"><?php echo $data['email_err']; ?></span>
+                        <input required type="email" id="email" minlength="1" name="email" class="form-control form-control-lg" value="">
+                        <span class="invalid-feedback"></span>
                     </div>
                     <div class="form-group">
                         <label for="password">Password: <sup>*</sup></label>
-                        <input type="password" id="password" name="password" class="form-control form-control-lg" value="">
-                        <span class="invalid-feedback"><?php echo $data['password_err']; ?></span>
+                        <input type="password" required minlength="3" id="password" name="password" class="form-control form-control-lg" value="">
+                        <span class="invalid-feedback"></span>
                     </div>
                     <div class="row">
                         <div class="col">

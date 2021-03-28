@@ -1,9 +1,9 @@
 package bg.example.football.web;
 
+import bg.example.football.model.binding.UserLoginBindingModel;
 import bg.example.football.model.binding.UserRegisterBindingModel;
 import bg.example.football.model.service.UserRegisterServiceModel;
 import bg.example.football.service.users.UserService;
-import org.dom4j.rule.Mode;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
@@ -32,10 +32,10 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(Model model) {
-//        if(!model.containsAttribute("userLoginBindingModel")) {
-//            model.addAttribute("userLoginBindingModel", new UserLoginBindingModel());
-//            model.addAttribute("notFound", false);
-//        }
+        if(!model.containsAttribute("userLoginBindingModel")) {
+            model.addAttribute("userLoginBindingModel", new UserLoginBindingModel());
+            model.addAttribute("notFound", false);
+        }
 
         return "users/login";
     }
@@ -76,15 +76,14 @@ public class UserController {
 
 
     @PostMapping("/login-error")
-    public String failedLogin(@ModelAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY)
-                                      String username,
+    public String failedLogin(@ModelAttribute("email")
+                                      String email,
                               RedirectAttributes attributes) {
 
         attributes.addFlashAttribute("bad_credentials", true);
-        attributes.addFlashAttribute("username", username);
+        attributes.addFlashAttribute("email", email);
 
         return "redirect:login";
     }
-
 
 }

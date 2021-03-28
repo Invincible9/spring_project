@@ -1,18 +1,20 @@
 package bg.example.football.model.binding;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class UserRegisterBindingModel {
+
     @NotNull
     private String email;
 
-    @NotNull
+    @Min(value = 5)
     private String fullName;
 
-    @NotNull
+    @Min(value = 3)
     private String password;
 
-    @NotNull
+    @Min(value = 3)
     private String confirmPassword;
 
     public UserRegisterBindingModel() {
