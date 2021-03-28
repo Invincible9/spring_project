@@ -8,16 +8,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Configuration
-public class SecurityBeans {
+public class ApplicationConfig {
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
+//    @Bean
+//    public Gson gson() {
+//        return new GsonBuilder().
+//                excludeFieldsWithoutExposeAnnotation().
+//                create();
+//    }
 
 }

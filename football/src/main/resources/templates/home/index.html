@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+        <th:block th:include="~{/fragments/nav}"></th:block>
+    </nav>
+</header>
+
+<main>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="jumbotron jumbotron-fluid text-center">
+                <div class="container">
+                    <h1 class="display-3">test</h1>
+                    <p class="lead mt-5">test1</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <th:block sec:authorize="isAuthenticated()">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <h3>How to use it:</h3>
+                <p>1.Firstly, you need to create nationality, for example - England, Italy, Spain, Germany, France.. etc</p>
+                <p>2.Next step is to create division for example - Premiership, Seria A... etc</p>
+                <p>3.After creation of the nationality and division, now you must create teams, for example Liverpool, Parma, Barcelona, Bayern.. etc</p>
+                <p>4.Next you must create seasons - for example 2020-2021, 2019-2020 or maybe season 2020-2021 etc..</p>
+                <p>5.Next you must create rounds, for example - round 01, round 02 or maybe just 01, 02, 03 etc...</p>
+                <p>6.Final step is to create game - Arsenal - Man Utd for example or something like that.</p>
+            </div>
+        </div>
+    </th:block>
+</main>
+    <footer class="footer bg-blur">
+        <th:block th:include="~{/fragments/footer}"></th:block>
+    </footer>
+</body>
+</html>

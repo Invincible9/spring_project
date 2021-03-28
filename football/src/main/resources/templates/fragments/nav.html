@@ -1,0 +1,87 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+        <div class="container">
+            <a class="navbar-brand" href="">FOOTBALL BLOG</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav mr-auto">
+<!--                    <?php if (isAdmin()) : ?>-->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Menu
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/nationalities/list">1.Nationalities</a>
+                            <a class="dropdown-item" href="/divisions/list">2.Divisions</a>
+                            <a class="dropdown-item" href="/teams/list">3.Teams</a>
+                            <a class="dropdown-item" href="/seasons/list">4.Seasons</a>
+                            <a class="dropdown-item" href="/rounds/list">5.Rounds</a>
+                            <a class="dropdown-item" href="/games/list">6.Games</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/statuses/list">Statuses</a>
+                            <a class="dropdown-item" href="/problems/problems">Problems</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="strategies" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Strategies
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="strategies">
+                            <a class="dropdown-item" href="/strategies/list">Strategies</a>
+                            <a class="dropdown-item" href="/strategies/lay_the_drawn">Lay the drawn</a>
+                        </div>
+                    </li>
+
+<!--                    <?php elseif (isLoggedIn()) : ?>-->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Menu
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/nationalities/list">1.Nationalities</a>
+                            <a class="dropdown-item" href="/divisions/list">2.Divisions</a>
+                            <a class="dropdown-item" href="/teams/list">3.Teams</a>
+                            <a class="dropdown-item" href="/seasons/list">4.Seasons</a>
+                            <a class="dropdown-item" href="/rounds/list">5.Rounds</a>
+                            <a class="dropdown-item" href="/games/list">6.Games</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="strategies" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Strategies
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="strategies">
+                            <a class="dropdown-item" href="/strategies/list">Strategies</a>
+                            <a class="dropdown-item" href="/strategies/lay_the_drawn">Lay the drawn</a>
+                        </div>
+                    </li>
+
+                    <?php endif; ?>
+                </ul>
+
+                <ul class="navbar-nav mr-right">
+                    <th:block sec:authorize="isAuthenticated()">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pages/about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/logout">Logout</a>
+                        </li>
+                    </th:block>
+
+                    <th:block sec:authorize="isAnonymous()">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/login">Login</a>
+                        </li>
+                    </th:block>
+                </ul>
+            </div>
+        </div>
+</th:block>

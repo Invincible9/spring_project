@@ -1,4 +1,4 @@
-package bg.example.football.model;
+package bg.example.football.model.entities;
 
 import org.hibernate.annotations.GenericGenerator;
 
