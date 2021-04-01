@@ -1,11 +1,14 @@
 package bg.example.football.web;
 
 import bg.example.football.model.binding.UserLoginBindingModel;
+import bg.example.football.model.binding.UserProfileBindingModel;
 import bg.example.football.model.binding.UserRegisterBindingModel;
+import bg.example.football.model.service.UserProfileServiceModel;
 import bg.example.football.model.service.UserRegisterServiceModel;
 import bg.example.football.service.users.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/users")
@@ -29,7 +33,6 @@ public class UserController {
         this.modelMapper = modelMapper;
     }
 
-
     @GetMapping("/login")
     public String login(Model model) {
         if(!model.containsAttribute("userLoginBindingModel")) {
@@ -39,7 +42,6 @@ public class UserController {
 
         return "users/login";
     }
-
 
     @GetMapping("/register")
     public String register(Model model) {
@@ -85,5 +87,30 @@ public class UserController {
 
         return "redirect:login";
     }
+
+
+    @GetMapping("/profile")
+    public String profile(Model model, @AuthenticationPrincipal UserDetails principal) {
+        if(!model.containsAttribute("userProfileBindingModel")) {
+            model.addAttribute("userProfileBindingModel",
+                    this.modelMapper.map(
+                    this.userService.findOneByEmail(principal.getUsername()),
+                    UserProfileServiceModel.class));
+        }
+
+        return "users/profile";
+    }
+
+    @PostMapping("/profile")
+    public String profileProcess(@Valid @ModelAttribute("userProfileBindingModel")
+                                             UserProfileBindingModel userProfileBindingModel,
+                                 @AuthenticationPrincipal UserDetails principal) throws IOException {
+
+        userProfileBindingModel.setEmail(principal.getUsername());
+        this.userService.updateProfile(this.modelMapper.map(userProfileBindingModel, UserProfileServiceModel.class));
+        return "redirect:profile";
+    }
+
+
 
 }

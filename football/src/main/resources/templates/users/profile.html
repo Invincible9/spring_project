@@ -1,13 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+        <th:block th:include="~{/fragments/nav}"></th:block>
+    </nav>
+</header>
+
+
 <main>
-    <div class="container body-container">
-        <div class="row">
-            <div id="main" class="col-sm-9">
-                <div>
-                    <span th:text="${user.email}"></span>
-                    <br/>
-                    <span th:text="${user.fullName}"></span>
-                </div>
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card card-body bg-light mt-5">
+                <h2>Update your profile</h2>
+                <p>Please fill out this fields</p>
+                <form th:object="${userProfileBindingModel}" th:action="@{/users/profile}" enctype="multipart/form-data" method="POST">
+                    <div class="form-group">
+                        <label for="fullName">Full Name: <sup>*</sup></label>
+                        <input th:value="*{fullName}" type="text" id="fullName" name="fullName" class="form-control form-control-lg">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Upload Image: <sup>*</sup></label>
+                        <input th:value="*{image}" type="file" id="image" name="image" class="form-control form-control-lg">
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <input type="submit" value="Save" class="btn btn-success btn-block">
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </main>
+
+
+<footer class="footer bg-blur">
+    <th:block th:include="~{/fragments/footer}"></th:block>
+</footer>
+</body>
+</html>

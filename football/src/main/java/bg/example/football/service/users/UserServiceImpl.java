@@ -4,9 +4,11 @@ import bg.example.football.model.entities.UserEntity;
 import bg.example.football.model.entities.UserRoleEntity;
 import bg.example.football.model.entities.enums.UserRole;
 import bg.example.football.model.service.UserLoginServiceModel;
+import bg.example.football.model.service.UserProfileServiceModel;
 import bg.example.football.model.service.UserRegisterServiceModel;
 import bg.example.football.repository.UserRepository;
 import bg.example.football.repository.UserRoleRepository;
+import bg.example.football.service.CloudinaryService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Set;
 
 @Service
@@ -29,16 +32,20 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final UserDetailsServiceImpl userDetailsService;
+    private final CloudinaryService cloudinaryService;
 
     public UserServiceImpl(UserRoleRepository userRoleRepository,
                            UserRepository userRepository,
                            PasswordEncoder passwordEncoder,
-                           ModelMapper modelMapper, UserDetailsServiceImpl userDetailsService) {
+                           ModelMapper modelMapper,
+                           UserDetailsServiceImpl userDetailsService,
+                           CloudinaryService cloudinaryService) {
         this.userRoleRepository = userRoleRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
         this.userDetailsService = userDetailsService;
+        this.cloudinaryService = cloudinaryService;
     }
 
     public void initRoles() {
@@ -119,8 +126,16 @@ public class UserServiceImpl implements UserService {
                 .orElse(null);
     }
 
+    @Override
+    public void updateProfile(UserProfileServiceModel userProfileServiceModel) throws IOException {
+        UserEntity userEntity =
+                this.modelMapper.map(
+                this.findOneByEmail(userProfileServiceModel.getEmail()), UserEntity.class);
 
-
+        String url = this.cloudinaryService.uploadImage(userProfileServiceModel.getImage());
+        userEntity.setImageUrl(url);
+        this.userRepository.save(userEntity);
+    }
 
 
 }

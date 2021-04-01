@@ -68,6 +68,12 @@
                             <a class="nav-link" th:href="@{/pages/about}">About</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" th:href="@{/users/profile}">
+                                <img th:if="${session.get('url') }" th:src="${session.get('url') }" width="15px" height="15px" >
+                                <span th:unless="${session.get('url') }">Profile</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <form th:action="@{/logout}" method="POST">
                                 <button type="submit" class="btn nav-link">Logout</button>
                             </form>
