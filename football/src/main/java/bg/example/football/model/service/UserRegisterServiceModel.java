@@ -19,23 +19,26 @@ public class UserRegisterServiceModel {
         return email;
     }
 
-    public void setEmail(String email) {
+    public UserRegisterServiceModel setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public String getFullName() {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
+    public UserRegisterServiceModel setFullName(String fullName) {
         this.fullName = fullName;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public UserRegisterServiceModel setPassword(String password) {
         this.password = password;
+        return this;
     }
 }

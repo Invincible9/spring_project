@@ -10,7 +10,7 @@ public interface UserService {
 
     void initAdmin();
 
-    void register(UserRegisterServiceModel serviceModel);
+    UserEntity register(UserRegisterServiceModel serviceModel);
 
     void login(UserLoginServiceModel userLoginServiceModel);
 

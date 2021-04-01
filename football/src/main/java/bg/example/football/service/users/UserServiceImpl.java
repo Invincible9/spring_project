@@ -66,19 +66,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(UserRegisterServiceModel serviceModel) {
+    public UserEntity register(UserRegisterServiceModel serviceModel) {
         LOGGER.info("Creating a new user with email [PROTECTED].");
 
         UserEntity newUser = modelMapper.map(serviceModel, UserEntity.class);
-        newUser.setPassword(passwordEncoder.encode(serviceModel.getPassword()));
+        if (serviceModel.getPassword() != null) {
+            newUser.setPassword(passwordEncoder.encode(serviceModel.getPassword()));
+        }
 
         UserRoleEntity userRole = userRoleRepository.
                 findByRole(UserRole.USER).orElseThrow(
                 () -> new IllegalStateException("USER role not found. Please seed the roles."));
 
         newUser.addRole(userRole);
-
-        userRepository.save(newUser);
+        return userRepository.save(newUser);
     }
 
     @Override
@@ -108,14 +109,14 @@ public class UserServiceImpl implements UserService {
     public UserEntity findOneByEmail(String email) {
         return this.userRepository
                 .findByEmail(email)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElse(null);
     }
 
     @Override
     public UserEntity findOneById(String id) {
         return userRepository
                 .findById(id)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElse(null);
     }
 
 

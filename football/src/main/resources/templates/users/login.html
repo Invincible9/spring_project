@@ -16,6 +16,14 @@
             <div class="card card-body bg-light mt-5">
                 <h2>Login</h2>
                 <p>Please fill in your credentials to log in</p>
+                <p>
+                    <a th:href="@{/oauth2/authorization/facebook}"
+                       class="btn btn-block btn-outline-primary">
+                        <i class="fab fa-facebook-f"></i>
+                        Login via facebook
+                    </a>
+                </p>
+                <hr>
                 <form th:action="@{/users/login}" method="POST">
                     <div class="form-group">
                         <label for="email">Email: <sup>*</sup></label>

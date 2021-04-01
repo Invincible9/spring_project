@@ -8,7 +8,7 @@ public class UserRegisterBindingModel {
     @NotNull
     private String email;
 
-    @Min(value = 5)
+    @NotNull
     private String fullName;
 
     @Min(value = 3)

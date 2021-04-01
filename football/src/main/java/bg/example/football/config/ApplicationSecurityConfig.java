@@ -1,6 +1,6 @@
 package bg.example.football.config;
 
-//import bg.football.tabula.user.OAuth2UserAuthSuccessHandler;
+import bg.example.football.service.users.OAuth2UserAuthSuccessHandler;
 import bg.example.football.service.users.UserDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -15,11 +16,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsService userDetailsService;
+    private final OAuth2UserAuthSuccessHandler oAuth2UserAuthSuccessHandler;
     private final PasswordEncoder passwordEncoder;
 
-    public ApplicationSecurityConfig(UserDetailsServiceImpl userDetailsService, PasswordEncoder passwordEncoder) {
+    public ApplicationSecurityConfig(UserDetailsServiceImpl userDetailsService,
+                                     OAuth2UserAuthSuccessHandler oAuth2UserAuthSuccessHandler,
+                                     PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
+        this.oAuth2UserAuthSuccessHandler = oAuth2UserAuthSuccessHandler;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -56,7 +61,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 // remove the session from the server
                         invalidateHttpSession(true).
                 // delete the session cookie
-                        deleteCookies("JSESSIONID");
+                        deleteCookies("JSESSIONID").
+                and().
+                oauth2Login().
+                loginPage("/login").
+                successHandler(oAuth2UserAuthSuccessHandler);
     }
 
     @Override

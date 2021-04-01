@@ -30,7 +30,7 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-    @Column(name = "full_name", nullable = false)
+    @Column(name = "full_name")
     public String getFullName() {
         return fullName;
     }
@@ -40,7 +40,7 @@ public class UserEntity extends BaseEntity {
         return this;
     }
 
-    @Column(name = "password", length = 60, nullable = false)
+    @Column(name = "password")
     public String getPassword() {
         return password;
     }
