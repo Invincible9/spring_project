@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+        <th:block th:include="~{/fragments/nav}"></th:block>
+    </nav>
+</header>
+
+<main>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+<!--            TODO: flash message-->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card card-body bg-light mt-5">
+                <h2>Add division</h2>
+                <form th:object="${divisionBindingModel}" th:action="@{/divisions/create}" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for4="name">Name: <sup>*</sup></label>
+                        <input type="text" name="name" class="form-control form-control-lg" value="">
+                        <span th:each="e : ${#fields.errors('name')}" th:text="${e}" class="invalid-feedback"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="logo">Logo: <sup>*</sup></label>
+                        <input type="file" id="logo" name="logo" class="form-control form-control-lg " value="">
+                        <span th:each="e : ${#fields.errors('logo')}" th:text="${e}" class="invalid-feedback"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nationality">Nationality: <sup>*</sup></label>
+                        <select class="form-control form-control-lg" name="nationality" id="nationality">
+                            <option value="0">Choose</option>
+                            <option th:each="o : ${T(bg.example.football.model.entities.enums.NationalityName).values()}"
+                                    th:selected="(${o} == *{nationality})"  th:text="${o}" th:value="${o}">Shirt</option>
+                        </select>
+                        <span th:each="e : ${#fields.errors('nationality')}" th:text="${e}" class="invalid-feedback"></span>
+                    </div>
+                    <?php else: ?>
+                    <p class="text text-danger">You must firstly create a nationality - England, France for example</p>
+
+                    <div class="row">
+                        <div class="col">
+                            <input type="submit" value="Add" class="btn btn-success btn-block col-lg-3 col-md-3 col-sm-3">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer bg-blur">
+    <th:block th:include="~{/fragments/footer}"></th:block>
+</footer>
+</body>
+</html>

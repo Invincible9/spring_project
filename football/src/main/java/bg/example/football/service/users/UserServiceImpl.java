@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
             UserRoleEntity userRole = this.userRoleRepository.findByRole(UserRole.USER).orElseThrow();
 
             UserEntity admin = new UserEntity()
-                    .setEmail("admin")
+                    .setEmail("admin@admin.com")
                     .setFullName("Admin Adminov")
                     .setPassword(passwordEncoder.encode("admin"));
 

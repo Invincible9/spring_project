@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+        <th:block th:include="~{/fragments/nav}"></th:block>
+    </nav>
+</header>
+
+<main>
+
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <p>No results found <a class="btn btn-primary" th:href="@{/}">Back</a></p>
+    </div>
+</div>
+
+<th:block sec:authorize="hasRole('ROLE_ADMIN')">
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <a class="btn btn-primary mt-1 mb-58" th:href="@{/divisions/create}">Add</a>
+    </div>
+</div>
+</th:block>
+
+<?php if (count($data) > 0) : ?>
+<div class="row card-group">
+    <?php foreach ($data['divisions'] as $key => $value) : ?>
+    <div class="col-lg-4 col-md-4 col-sm-4 mb-3">
+        <?php addCard(['image' => $value->logo, 'title' => $value->name, 'text' => 'Nationality ' . $value->nationality_name . ' <img height="20px" width="20px;" src="' . $value->nationality_logo .'" />' , 'small_text' => '']); ?>
+        <?php if (isAdmin()) : ?>
+        <a href="/divisions/edit/<?php echo $value->id; ?>" class="btn btn-warning mb-5 mt-1">Edit</a>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-danger mb-5 mt-1" data-toggle="modal" data-target="#deleteWarningModal<?php echo $value->id; ?>">
+            Delete
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="deleteWarningModal<?php echo $value->id; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteWarningModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteWarningModalLabel">Are you sure?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete nationality <?php echo $value->name; ?> ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="/divisions/delete/<?php echo $value->id; ?>" class="btn btn-danger">Confirm</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+    </div>
+    <!-- <?php //if($key % 3 === 0) echo '</div><div class="row">'
+            ?> -->
+    <?php if (($key + 1) % 3 === 0) : ?>
+</div>
+<div class="row">
+    <?php endif; ?>
+    <?php endforeach; ?>
+</div>
+
+<?php if ($data['hasNextPage']) : ?>
+<a href="<?php echo URLROOT; ?>/divisions/list/<?php echo $nextPage; ?>" class="btn btn-primary mb-5 mt-1">Next</a>
+<?php endif; ?>
+
+<?php if ($data['hasPrevPage']) : ?>
+<a href="<?php echo URLROOT; ?>/divisions/list/<?php echo $prevPage; ?>" class="btn btn-primary mb-5 mt-1">Prev</a>
+<?php endif; ?>
+
+<?php endif; ?>
+
+</main>
+
+<footer class="footer bg-blur">
+    <th:block th:include="~{/fragments/footer}"></th:block>
+</footer>
+</body>
+</html>
