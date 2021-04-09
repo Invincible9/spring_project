@@ -30,7 +30,6 @@ public class NationalityController {
         this.modelMapper = modelMapper;
     }
 
-
     @GetMapping("/list")
     public String all(Model model) {
         List<NationalityViewModel> nationalities = this.nationalityService.getAll();

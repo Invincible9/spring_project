@@ -4,38 +4,41 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 
-public class DivisionBindingModel {
+public class TeamBindingModel {
     @NotNull
     private String name;
     @NotNull
     private MultipartFile logo;
     @NotNull
-    private String nationalityName;
+    private String divisionName;
 
-    public DivisionBindingModel() {
+    public TeamBindingModel() {
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public TeamBindingModel setName(String name) {
         this.name = name;
+        return this;
     }
 
     public MultipartFile getLogo() {
         return logo;
     }
 
-    public void setLogo(MultipartFile logo) {
+    public TeamBindingModel setLogo(MultipartFile logo) {
         this.logo = logo;
+        return this;
     }
 
-    public String getNationalityName() {
-        return nationalityName;
+    public String getDivisionName() {
+        return divisionName;
     }
 
-    public void setNationalityName(String nationalityName) {
-        this.nationalityName = nationalityName;
+    public TeamBindingModel setDivisionName(String divisionName) {
+        this.divisionName = divisionName;
+        return this;
     }
 }

@@ -1,18 +1,18 @@
-package bg.example.football.model.binding;
+package bg.example.football.model.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 
-public class DivisionBindingModel {
+public class TeamServiceModel {
     @NotNull
     private String name;
     @NotNull
     private MultipartFile logo;
     @NotNull
-    private String nationalityName;
+    private String divisionName;
 
-    public DivisionBindingModel() {
+    public TeamServiceModel() {
     }
 
     public String getName() {
@@ -31,11 +31,11 @@ public class DivisionBindingModel {
         this.logo = logo;
     }
 
-    public String getNationalityName() {
-        return nationalityName;
+    public String getDivisionName() {
+        return divisionName;
     }
 
-    public void setNationalityName(String nationalityName) {
-        this.nationalityName = nationalityName;
+    public void setDivisionName(String divisionName) {
+        this.divisionName = divisionName;
     }
 }

@@ -1,6 +1,7 @@
 package bg.example.football.service.nationalities;
 
 
+import bg.example.football.model.entities.NationalityEntity;
 import bg.example.football.model.service.NationalityServiceModel;
 import bg.example.football.model.view.NationalityViewModel;
 
@@ -11,5 +12,5 @@ public interface NationalityService {
     void create(NationalityServiceModel nationalityServiceModel) throws IOException;
     void edit(NationalityServiceModel nationalityServiceModel, int id);
     List<NationalityViewModel> getAll();
-
+    NationalityEntity getOneByName(String name);
 }

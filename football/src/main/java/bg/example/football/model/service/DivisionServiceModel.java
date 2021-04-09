@@ -10,7 +10,7 @@ public class DivisionServiceModel {
     @NotNull
     private MultipartFile logo;
     @NotNull
-    private String nationality;
+    private String nationalityName;
 
     public DivisionServiceModel() {
     }
@@ -31,11 +31,11 @@ public class DivisionServiceModel {
         this.logo = logo;
     }
 
-    public String getNationality() {
-        return nationality;
+    public String getNationalityName() {
+        return nationalityName;
     }
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
+    public void setNationalityName(String nationalityName) {
+        this.nationalityName = nationalityName;
     }
 }

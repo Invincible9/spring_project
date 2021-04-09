@@ -31,15 +31,14 @@
                         <input type="file" id="logo" name="logo" class="form-control form-control-lg " value="">
                         <span th:each="e : ${#fields.errors('logo')}" th:text="${e}" class="invalid-feedback"></span>
                     </div>
-
                     <div class="form-group">
-                        <label for="nationality">Nationality: <sup>*</sup></label>
-                        <select class="form-control form-control-lg" name="nationality" id="nationality">
+                        <label for="nationalityName">Nationality: <sup>*</sup></label>
+                        <select class="form-control form-control-lg" name="nationalityName" id="nationalityName">
                             <option value="0">Choose</option>
-                            <option th:each="o : ${T(bg.example.football.model.entities.enums.NationalityName).values()}"
-                                    th:selected="(${o} == *{nationality})"  th:text="${o}" th:value="${o}">Shirt</option>
+                            <option th:each="n : ${nationalities}" th:object="${n}"
+                                      th:text="*{name}" th:value="*{name}"></option>
                         </select>
-                        <span th:each="e : ${#fields.errors('nationality')}" th:text="${e}" class="invalid-feedback"></span>
+                        <span th:each="e : ${#fields.errors('nationalityName')}" th:text="${e}" class="invalid-feedback"></span>
                     </div>
                     <?php else: ?>
                     <p class="text text-danger">You must firstly create a nationality - England, France for example</p>

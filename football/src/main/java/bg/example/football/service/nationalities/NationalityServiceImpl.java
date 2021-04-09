@@ -47,4 +47,9 @@ public class NationalityServiceImpl implements NationalityService {
                         this.modelMapper.map(nationalityEntity, NationalityViewModel.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public NationalityEntity getOneByName(String name) {
+        return this.nationalityRepository.findByName(name).orElse(null);
+    }
 }

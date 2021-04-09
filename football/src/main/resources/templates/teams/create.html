@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+<body>
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+    <th:block th:include="~{/fragments/nav}"></th:block>
+  </nav>
+</header>
+
+<main>
+
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+<!--      <?php echo flash('add_team'); ?>-->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card card-body bg-light mt-5">
+        <h2>Add Team</h2>
+        <form th:object="${teamBindingModel}" th:action="@{/teams/create}" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="name">Name: <sup>*</sup></label>
+            <input th:value="*{name}" type="text" id="name" name="name" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('name')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+          <div class="form-group">
+            <label for="logo">Logo: <sup>*</sup></label>
+            <input th:value="*{logo}" type="file" id="logo" name="logo" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('logo')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+
+<!--         <th:block th:unless="${divisions.isEmpty()}">-->
+              <div class="form-group">
+                <label for="divisionName">Division: <sup>*</sup></label>
+                <select class="form-control form-control-lg" name="divisionName" id="divisionName">
+                  <option value="0">Choose</option>
+                  <option th:each="d : ${divisions}" th:object="${d}"
+                          th:text="*{name}" th:value="*{name}"></option>
+                </select>
+                  <span th:each="e : ${#fields.errors('divisionName')}" th:text="${e}" class="invalid-feedback"></span>
+              </div>
+<!--         </th:block>-->
+
+<!--         <th:block th:if="${divisions.isEmpty()}">-->
+             <p class="text text-danger">You must firstly create a division - Seria A, Premiership, Bundesliga.. for example</p>
+<!--         </th:block>-->
+
+          <div class="row">
+            <div class="col">
+              <input type="submit" value="Add" class="btn btn-success btn-block col-lg-3 col-md-3 col-sm-3">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+</main>
+
+<footer class="footer bg-blur">
+  <th:block th:include="~{/fragments/footer}"></th:block>
+</footer>
+</body>
+</html>

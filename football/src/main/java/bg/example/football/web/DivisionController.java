@@ -3,6 +3,7 @@ package bg.example.football.web;
 import bg.example.football.model.binding.DivisionBindingModel;
 import bg.example.football.model.service.DivisionServiceModel;
 import bg.example.football.service.divisions.DivisionService;
+import bg.example.football.service.nationalities.NationalityService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,10 +22,13 @@ import java.io.IOException;
 public class DivisionController {
 
     private final DivisionService divisionService;
+    private final NationalityService nationalityService;
     private final ModelMapper modelMapper;
 
-    public DivisionController(DivisionService divisionService, ModelMapper modelMapper) {
+    public DivisionController(DivisionService divisionService,
+                              NationalityService nationalityService, ModelMapper modelMapper) {
         this.divisionService = divisionService;
+        this.nationalityService = nationalityService;
         this.modelMapper = modelMapper;
     }
 
@@ -32,6 +36,7 @@ public class DivisionController {
     public String create(Model model) {
         if(!model.containsAttribute("divisionBindingModel")) {
             model.addAttribute("divisionBindingModel", new DivisionBindingModel());
+            model.addAttribute("nationalities", this.nationalityService.getAll());
         }
         return "divisions/create";
     }
@@ -50,12 +55,13 @@ public class DivisionController {
 
         this.divisionService.create(this.modelMapper.map(divisionBindingModel, DivisionServiceModel.class));
 
-        return "redirect:/";
+        return "redirect:list";
     }
 
 
     @GetMapping("/list")
-    public String list() {
+    public String list(Model model) {
+        model.addAttribute("divisions", this.divisionService.getAll());
         return "divisions/list";
     }
 

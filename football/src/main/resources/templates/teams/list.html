@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+<body>
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+    <th:block th:include="~{/fragments/nav}"></th:block>
+  </nav>
+</header>
+
+<main>
+
+<!-- To list created nationalities here later -->
+<div class="row">
+  <div class="col-lg-8 mx-auto">
+<!--      <?php echo flash('add_team'); ?>-->
+
+    <p>No results found <a class="btn btn-primary" href="/">Back</a></p>
+
+  </div>
+</div>
+
+<th:block sec:authorize="hasRole('ROLE_ADMIN')">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <a class="btn btn-primary mt-1 mb-58" th:href="@{/teams/create}">Add</a>
+    </div>
+  </div>
+</th:block>
+
+<div th:each="t : ${teams}" th:object="${t}" class="row card-group">
+
+    <div class="col-lg-8 mx-auto">
+        <p th:text="|Team: *{name}|"></p>
+        <img th:src="*{logoUrl}" width="300px" height="300px"/>
+
+    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+        <a href="/teams/edit/" class="btn btn-warning mb-5 mt-1">Edit</a>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-danger mb-5 mt-1" data-toggle="modal" data-target="#deleteWarningModal<?php echo $value->id; ?>">
+          Delete
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="deleteWarningModal<?php echo $value->id; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteWarningModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteWarningModalLabel">Are you sure?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <span th:text="|Are you sure you want to delete team *{name} ?|"></span>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="/teams/delete/" class="btn btn-danger">Confirm</a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </th:block>
+  </div>
+
+</div>
+<div class="row">
+</div>
+
+<!--<a href="/teams/list/<?php echo $nextPage; ?>" class="btn btn-primary mb-5 mt-1">Next</a>-->
+<!--<a href="/teams/list/<?php echo $prevPage; ?>" class="btn btn-primary mb-5 mt-1">Prev</a>-->
+
+</main>
+
+<footer class="footer bg-blur">
+  <th:block th:include="~{/fragments/footer}"></th:block>
+</footer>
+</body>
+</html>

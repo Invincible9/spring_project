@@ -1,7 +1,5 @@
 package bg.example.football.model.entities;
 
-import bg.example.football.model.entities.enums.NationalityName;
-
 import javax.persistence.*;
 
 @Entity
@@ -9,7 +7,7 @@ import javax.persistence.*;
 public class DivisionEntity extends BaseEntity {
     private String name;
     private String logoUrl;
-    private NationalityName nationality;
+    private NationalityEntity nationality;
 
     public DivisionEntity() {
     }
@@ -32,13 +30,12 @@ public class DivisionEntity extends BaseEntity {
         this.logoUrl = logoUrl;
     }
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "nationality", nullable = false)
-    public NationalityName getNationality() {
+    @ManyToOne(cascade = CascadeType.MERGE)
+    public NationalityEntity getNationality() {
         return nationality;
     }
 
-    public void setNationality(NationalityName nationality) {
+    public void setNationality(NationalityEntity nationality) {
         this.nationality = nationality;
     }
 }
