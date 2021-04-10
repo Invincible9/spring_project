@@ -1,11 +1,13 @@
 package bg.example.football.model.service;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 
 public class TeamServiceModel {
-    @NotNull
+
+    @Length(min = 3, message = "Name length must be between 3 and 20 characters (inclusive 3 and 20).")
     private String name;
     @NotNull
     private MultipartFile logo;

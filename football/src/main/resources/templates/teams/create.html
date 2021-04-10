@@ -13,12 +13,12 @@
 <main>
 
   <div class="row">
-    <div class="col-lg-8 mx-auto">
+    <div class="col-lg-6 mx-auto">
 <!--      <?php echo flash('add_team'); ?>-->
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-8 mx-auto">
+    <div class="col-lg-6 mx-auto">
       <div class="card card-body bg-light mt-5">
         <h2>Add Team</h2>
         <form th:object="${teamBindingModel}" th:action="@{/teams/create}" method="POST" enctype="multipart/form-data">
@@ -37,7 +37,7 @@
               <div class="form-group">
                 <label for="divisionName">Division: <sup>*</sup></label>
                 <select class="form-control form-control-lg" name="divisionName" id="divisionName">
-                  <option value="0">Choose</option>
+                  <option value="">Choose</option>
                   <option th:each="d : ${divisions}" th:object="${d}"
                           th:text="*{name}" th:value="*{name}"></option>
                 </select>

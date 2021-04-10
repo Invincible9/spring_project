@@ -34,7 +34,7 @@
                     <div class="form-group">
                         <label for="nationalityName">Nationality: <sup>*</sup></label>
                         <select class="form-control form-control-lg" name="nationalityName" id="nationalityName">
-                            <option value="0">Choose</option>
+                            <option value="">Choose</option>
                             <option th:each="n : ${nationalities}" th:object="${n}"
                                       th:text="*{name}" th:value="*{name}"></option>
                         </select>

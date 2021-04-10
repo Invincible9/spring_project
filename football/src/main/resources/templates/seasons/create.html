@@ -12,7 +12,53 @@
 
 <main>
 
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+<!--      <?php echo flash('add_season'); ?>-->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <div class="card card-body bg-light mt-5">
+        <h2>Add Season</h2>
+        <form th:object="${seasonBindingModel}" th:action="@{/seasons/create}" method="POST" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="name">Name: <sup>*</sup></label>
+            <input type="text" name="name" class="form-control form-control-lg" value="">
+            <span th:each="e : ${#fields.errors('name')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
 
+          <div class="form-group">
+            <label for="divisionName">Division: <sup>*</sup></label>
+            <select class="form-control form-control-lg" name="divisionName" id="divisionName">
+              <option value="">Choose</option>
+              <option th:each="d : ${divisions}" th:object="${d}"
+                      th:text="*{name}" th:value="*{name}"></option>
+            </select>
+            <span th:each="e : ${#fields.errors('divisionName')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+
+          <p class="text text-danger">You must firstly create a division - Seria A, Premiership, Bundesliga.. for example</p>
+
+          <div class="form-group">
+            <label for="startDate">Season Start Date: <sup>*</sup></label>
+            <input type="date" name="startDate" class="form-control form-control-lg" value="">
+            <span th:each="e : ${#fields.errors('startDate')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+          <div class="form-group">
+            <label for="endDate">Season End Date: <sup>*</sup></label>
+            <input type="date" name="endDate" class="form-control form-control-lg" value="">
+            <span th:each="e : ${#fields.errors('endDate')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="submit" value="Add" class="btn btn-success btn-block col-lg-3 col-md-3 col-sm-3">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
 
 </main>
