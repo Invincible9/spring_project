@@ -1,20 +1,21 @@
 package bg.example.football.model.binding;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
 
 public class UserRegisterBindingModel {
 
-    @NotNull
+    @Email(message = "Enter valid email!")
     private String email;
 
-    @NotNull
+    @Length(min = 3, message = "Full Name length must be between 3 and 20 characters (inclusive 3 and 20).")
     private String fullName;
 
-    @Min(value = 3)
+    @Length(min = 3, message = "Password length must be between 3 and 20 characters (inclusive 3 and 20).")
     private String password;
 
-    @Min(value = 3)
+    @Length(min = 3, message = "Confirm Password length must be between 3 and 20 characters (inclusive 3 and 20).")
     private String confirmPassword;
 
     public UserRegisterBindingModel() {

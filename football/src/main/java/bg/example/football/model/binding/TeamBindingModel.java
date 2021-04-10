@@ -9,9 +9,11 @@ public class TeamBindingModel {
 
     @Length(min = 3, message = "Name length must be between 3 and 20 characters (inclusive 3 and 20).")
     private String name;
+
     @NotNull
     private MultipartFile logo;
-    @NotNull
+
+    @NotNull(message = "Enter valid division name!")
     private String divisionName;
 
     public TeamBindingModel() {

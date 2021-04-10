@@ -1,12 +1,15 @@
 package bg.example.football.model.binding;
 
-import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
 
 public class UserLoginBindingModel {
-    @NotNull
+
+    @Email(message = "Enter valid email!")
     private String email;
 
-    @NotNull
+    @Length(min = 3, message = "Password length must be between 3 and 20 characters (inclusive 3 and 20).")
     private String password;
 
     public UserLoginBindingModel() {
