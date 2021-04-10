@@ -10,4 +10,5 @@ public interface SeasonService {
     void create(SeasonServiceModel seasonServiceModel);
     List<SeasonViewModel> getAll();
     SeasonEntity getOneByName(String name);
+    SeasonViewModel getOneById(String id);
 }

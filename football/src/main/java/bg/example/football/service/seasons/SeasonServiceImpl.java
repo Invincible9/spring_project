@@ -47,4 +47,12 @@ public class SeasonServiceImpl implements SeasonService {
     public SeasonEntity getOneByName(String name) {
         return this.seasonRepository.findByName(name).orElse(null);
     }
+
+    @Override
+    public SeasonViewModel getOneById(String id) {
+        return this.seasonRepository.findById(id)
+                .stream().map(seasonEntity ->
+                        this.modelMapper.map(seasonEntity, SeasonViewModel.class))
+                .findFirst().orElse(null);
+    }
 }

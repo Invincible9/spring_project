@@ -13,7 +13,65 @@
 <main>
 
 
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+<!--      <?php echo flash('add_round'); ?>-->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <div class="card card-body bg-light mt-5">
+        <h2>Add Round</h2>
+        <form th:object="${roundBindingModel}" th:action="@{/rounds/create}" method="POST">
+          <div class="form-group">
+            <label for="name">Name: <sup>*</sup></label>
+            <input type="text" name="name" id="name" class="form-control form-control-lg" value="">
+            <span th:each="e : ${#fields.errors('name')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
 
+          <div class="form-group">
+            <label for="seasonName">Season: <sup>*</sup></label>
+            <select class="form-control form-control-lg" name="seasonName" id="seasonName">
+              <option value="">Choose</option>
+              <option th:each="s : ${seasons}" th:object="${s}"
+                      th:text="*{name}" th:value="*{name}"></option>
+            </select>
+            <span th:each="e : ${#fields.errors('seasonName')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+
+          <p class="text text-danger">You must firstly create a season - season 2020-2021.. for example</p>
+
+          <div class="form-group">
+            <label for="status">Status: <sup>*</sup></label>
+            <select class="form-control form-control-lg" name="status" id="status">
+              <option value="">Choose</option>
+              <option th:each="s : ${T(bg.example.football.model.entities.enums.StatusName).values()}"
+                      th:selected="(${s} == *{status})"  th:text="${s}" th:value="${s}">Shirt</option>
+            </select>
+            <span th:each="e : ${#fields.errors('status')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+
+          <p class="text text-danger">You must firstly create a status - upcoming, finished, delayed .. for example</p>
+
+          <div class="form-group">
+            <label for="startDate">Round Start Date: <sup>*</sup></label>
+            <input type="date" id="startDate" name="startDate" class="form-control form-control-lg" value="">
+            <span th:each="e : ${#fields.errors('startDate')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+          <div class="form-group">
+            <label for="endDate">Round End Date: <sup>*</sup></label>
+            <input type="date" id="endDate" name="endDate" class="form-control form-control-lg" value="">
+            <span th:each="e : ${#fields.errors('endDate')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+          <div class="row">
+            <div class="col">
+              <input type="submit" value="Add" class="btn btn-success btn-block col-lg-3 col-md-3 col-sm-3">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
 </main>
 

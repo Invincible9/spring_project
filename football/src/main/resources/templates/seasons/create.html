@@ -24,7 +24,7 @@
         <form th:object="${seasonBindingModel}" th:action="@{/seasons/create}" method="POST" enctype="multipart/form-data">
           <div class="form-group">
             <label for="name">Name: <sup>*</sup></label>
-            <input type="text" name="name" class="form-control form-control-lg" value="">
+            <input type="text" id="name" name="name" class="form-control form-control-lg" value="">
             <span th:each="e : ${#fields.errors('name')}" th:text="${e}" class="invalid-feedback"></span>
           </div>
 
@@ -42,12 +42,12 @@
 
           <div class="form-group">
             <label for="startDate">Season Start Date: <sup>*</sup></label>
-            <input type="date" name="startDate" class="form-control form-control-lg" value="">
+            <input type="date" id="startDate" name="startDate" class="form-control form-control-lg" value="">
             <span th:each="e : ${#fields.errors('startDate')}" th:text="${e}" class="invalid-feedback"></span>
           </div>
           <div class="form-group">
             <label for="endDate">Season End Date: <sup>*</sup></label>
-            <input type="date" name="endDate" class="form-control form-control-lg" value="">
+            <input type="date" id="endDate" name="endDate" class="form-control form-control-lg" value="">
             <span th:each="e : ${#fields.errors('endDate')}" th:text="${e}" class="invalid-feedback"></span>
           </div>
           <div class="row">
@@ -59,7 +59,6 @@
       </div>
     </div>
   </div>
-
 
 </main>
 
