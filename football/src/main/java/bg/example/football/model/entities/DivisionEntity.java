@@ -12,7 +12,7 @@ public class DivisionEntity extends BaseEntity {
     public DivisionEntity() {
     }
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }

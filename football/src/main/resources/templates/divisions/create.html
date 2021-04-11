@@ -40,7 +40,7 @@
                         </select>
                         <span th:each="e : ${#fields.errors('nationalityName')}" th:text="${e}" class="invalid-feedback"></span>
                     </div>
-                    <?php else: ?>
+
                     <p class="text text-danger">You must firstly create a nationality - England, France for example</p>
 
                     <div class="row">

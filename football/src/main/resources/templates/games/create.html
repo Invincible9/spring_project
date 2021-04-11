@@ -12,7 +12,300 @@
 
 <main>
 
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <?php echo flash('add_game'); ?>
+      <span id="other_errors"></span>
+    </div>
+  </div>
+  <div class="row mb-5">
+    <div class="col-md-6 mx-auto">
+      <div class="card card-body bg-light mt-5">
+        <h2 class="mb-5">Add game</h2>
+        <form th:object="${gameBindingModel}" th:action="@{/games/create}" method="POST">
 
+          <div class="row">
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="homeTeamNationality">Home Team Nationality: <sup>*</sup></label>
+              <select class="form-control form-control-lg" name="homeTeamNationality" id="homeTeamNationality">
+                <option value="">Choose nationality</option>
+                <option th:each="n : ${nationalities}" th:object="${n}"
+                        th:text="*{name}" th:value="*{name}"></option>
+              </select>
+              <span th:each="e : ${#fields.errors('homeTeamNationality')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="awayTeamNationality">Away Team Nationality: <sup>*</sup></label>
+              <select class="form-control form-control-lg" name="awayTeamNationality" id="awayTeamNationality">
+                <option value="">Choose nationality</option>
+                <option th:each="n : ${nationalities}" th:object="${n}"
+                        th:text="*{name}" th:value="*{name}"></option>
+              </select>
+              <span th:each="e : ${#fields.errors('awayTeamNationality')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="homeTeamDivision">Home Team Division: <sup>*</sup></label>
+              <select class="form-control form-control-lg" name="homeTeamDivision" id="homeTeamDivision">
+                <option value="">Choose Division</option>
+              </select>
+              <span th:each="e : ${#fields.errors('homeTeamDivision')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="awayTeamDivision">Away Team Division: <sup>*</sup></label>
+              <select class="form-control form-control-lg" name="awayTeamDivision" id="awayTeamDivision">
+                <option value="">Choose Division</option>
+              </select>
+              <span th:each="e : ${#fields.errors('awayTeamDivision')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="homeTeam">Home Team: <sup>*</sup></label>
+              <select class="form-control form-control-lg" id="homeTeam">
+                <option value="">Choose Home Team</option>
+              </select>
+              <span th:each="e : ${#fields.errors('homeTeam')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="awayTeam">Away Team: <sup>*</sup></label>
+              <select class="form-control form-control-lg" id="awayTeam">
+                <option value="">Choose Away Team</option>
+              </select>
+              <span th:each="e : ${#fields.errors('awayTeam')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div id="homeTeamLogoCont"></div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div id="awayTeamLogoCont"></div>
+            </div>
+          </div>
+
+          <hr class="mt-5 mb-5" />
+          <div class="form-group">
+            <label for="date">Game Date: <sup>*</sup></label>
+            <input type="date" name="date" id="date" class="form-control form-control-lg" value="">
+            <span th:each="e : ${#fields.errors('date')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+          <hr class="mt-5 mb-5" />
+          <div class="row">
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="homeTeamGoals">Home Team Goals: <sup>*</sup></label>
+              <input type="number" name="homeTeamGoals" min="0" max="100" id="homeTeamGoals" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('homeTeamGoals')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="awayTeamGoals">Away Team Goals: <sup>*</sup></label>
+              <input type="number" name="awayTeamGoals" min="0" max="100" id="awayTeamGoals" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('awayTeamGoals')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="homeTeamScoreGoalsMinutes">Minutes when home team score.. example: 5, 14, 30...: <sup>*</sup></label>
+              <input type="text" name="homeTeamScoreGoalsMinutes" id="homeTeamScoreGoalsMinutes" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('homeTeamScoreGoalsMinutes')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="awayTeamScoreGoalsMinutes">Minutes when away team score.. example: 5, 14, 30... <sup>*</sup></label>
+              <input type="text" name="awayTeamScoreGoalsMinutes" id="awayTeamScoreGoalsMinutes" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('awayTeamScoreGoalsMinutes')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="homeTeamAllowGoalsMinutes">Minutes when home team allow goals.. example: 5, 14, 30...: <sup>*</sup></label>
+              <input type="text" name="homeTeamAllowGoalsMinutes" id="homeTeamAllowGoalsMinutes" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('homeTeamAllowGoalsMinutes')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="awayTeamAllowGoalsMinutes">Minutes when away team allow goals.. example: 5, 14, 30... <sup>*</sup></label>
+              <input type="text" name="awayTeamAllowGoalsMinutes" id="awayTeamAllowGoalsMinutes" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('awayTeamAllowGoalsMinutes')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="homeTeamCorners">Home team corners: <sup>*</sup></label>
+              <input type="number" name="homeTeamCorners" min="0" max="100" id="homeTeamCorners" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('homeTeamCorners')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="awayTeamCorners">Away team corners:<sup>*</sup></label>
+              <input type="number" name="awayTeamCorners" min="0" max="100" id="awayTeamCorners" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('awayTeamCorners')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+
+
+          <div class="row">
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="homeTeamShots">Home team shots: <sup>*</sup></label>
+              <input type="number" name="homeTeamShots" min="0" max="200" id="homeTeamShots" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('homeTeamShots')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="awayTeamShots">Away team shots:<sup>*</sup></label>
+              <input type="number" name="awayTeamShots" min="0" max="200" id="awayTeamShots" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('awayTeamShots')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="homeTeamCrosses">Home team crosses: <sup>*</sup></label>
+              <input type="number" name="homeTeamCrosses" min="0" max="200" id="homeTeamCrosses" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('homeTeamCrosses')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="awayTeamCrosses">Away team crosses:<sup>*</sup></label>
+              <input type="number" name="awayTeamCrosses" min="0" max="200" id="awayTeamCrosses" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('awayTeamCrosses')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="homeTeamCounters">Home team counter-attacks: <sup>*</sup></label>
+              <input type="number" name="homeTeamCounters" min="0" max="200" id="homeTeamCounters" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('homeTeamCounters')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="awayTeamCounters">Away team counter-attacks:<sup>*</sup></label>
+              <input type="number" name="awayTeamCounters" min="0" max="200" id="awayTeamCounters" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('awayTeamCounters')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="homeTeamPossession">Home team possession: <sup>*</sup></label>
+              <input type="number" name="homeTeamPossession" min="0" max="100" id="homeTeamPossession" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('homeTeamPossession')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+
+            <div class="form-group col-lg-6 col-md-6 col-sm-6">
+              <label for="awayTeamPossession">Away team possession:<sup>*</sup></label>
+              <input type="number" name="awayTeamPossession" min="0" max="100" id="awayTeamPossession" class="form-control form-control-lg" value="">
+              <span th:each="e : ${#fields.errors('awayTeamPossession')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+          <hr class="mt-5 mb-5" />
+
+          <div class="row">
+            <div class="form-group col-lg-12 col-md-12 col-sm-12">
+              <label for="winner">Game Winner: <sup>*</sup></label>
+              <select class="form-control form-control-lg" name="winner" id="winner">
+                <option value="1">Home</option>
+                <option selected="selected" value="x">X</option>
+                <option value="2">Away</option>
+              </select>
+              <span th:each="e : ${#fields.errors('winner')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+          <hr class="mt-5 mb-5" />
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 form-group">
+              <label for="nationality">Nationality: <sup>*</sup></label>
+              <select class="form-control form-control-lg" name="nationality" id="nationality">
+                <option value="">Choose nationality</option>
+                <option th:each="n : ${nationalities}" th:object="${n}"
+                        th:text="*{name}" th:value="*{name}"></option>
+              </select>
+              <span th:each="e : ${#fields.errors('nationalityName')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 form-group">
+              <label for="nationality">Division: <sup>*</sup></label>
+              <select class="form-control form-control-lg" name="division" id="division">
+                <option value="">Choose division</option>
+              </select>
+              <span th:each="e : ${#fields.errors('divisionName')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 form-group">
+              <label for="nationality">Season: <sup>*</sup></label>
+              <select class="form-control form-control-lg" name="season" id="season">
+                <option value="">Choose season</option>
+              </select>
+              <span th:each="e : ${#fields.errors('seasonName')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 form-group">
+              <label for="nationality">Round: <sup>*</sup></label>
+              <select class="form-control form-control-lg" name="round" id="round">
+                <option value="">Choose round</option>
+              </select>
+              <span th:each="e : ${#fields.errors('roundName')}" th:text="${e}" class="invalid-feedback"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="status">Status: <sup>*</sup></label>
+            <select class="form-control" name="status" id="status">
+              <option value="">Choose</option>
+              <option th:each="s : ${T(bg.example.football.model.entities.enums.StatusName).values()}"
+                      th:selected="(${s} == *{status})"  th:text="${s}" th:value="${s}">Shirt</option>
+            </select>
+            <span th:each="e : ${#fields.errors('status')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+
+          <p class="text text-danger">You must firstly create a status - upcoming, finished, delayed .. for example</p>
+
+          <div class="row">
+            <div class="col">
+              <input type="submit" id="submitBtn" value="Add" class="btn btn-success btn-block col-lg3 col-md-3 col-sm-3">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script>
+      // const getNationalitiesURL = '/nationalities/getNationalitiesJSON';
+      // const getDivisionsByNationalityURL = '/divisions/getAllDivisionsByNationalityJSON/';
+      // const getTeamsByDivisionURL = '/teams/getAllTeamsByDivisionJSON/';
+      // const getSeasonsByDivisionURL = '/seasons/getSeasonsByDivisionJSON/';
+      // const getRoundBySeasonURL = '/rounds/getRoundsBySeasonJSON/';
+    </script>
+    <script src="/scripts/games_add.js"></script>
+
+  </div>
 
 
 </main>

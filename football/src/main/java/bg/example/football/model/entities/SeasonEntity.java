@@ -14,7 +14,7 @@ public class SeasonEntity extends BaseEntity {
     public SeasonEntity() {
     }
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }

@@ -18,7 +18,7 @@ public class RoundEntity extends BaseEntity {
     public RoundEntity() {
     }
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }

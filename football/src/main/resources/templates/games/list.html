@@ -12,8 +12,168 @@
 
 <main>
 
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+<!--      <?php echo flash('add_game'); ?>-->
+      <span id="other_errors"></span>
+    </div>
+  </div>
+
+  <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+    <hr />
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <p>Admin Settings</p>
+        <a class="btn btn-primary mt-2 mb-5" th:href="@{/games/create}">Add</a>
+      </div>
+    </div>
+    <hr />
+  </th:block>
+
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <a class="btn btn-primary mt-2 mb-5" href="/games/onlineGames">Online Games</a>
+      <a class="btn btn-primary mt-2 mb-5" href="/games/upcomingGames">Upcoming Games</a>
+    </div>
+  </div>
+
+  <div th:each="g : ${games}" th:object="${g}" class="row">
+    <div class="col-lg-8 mx-auto">
+      <form action='filteredGames' method='get'>
+        <div class="row">
+
+          <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+            <label for="nationalityName">Nationality: <sup>*</sup></label>
+            <select class="form-control" name="nationalityName" id="nationalityName">
+              <option value="">Choose</option>
+              <option th:each="n : ${nationalities}" th:object="${n}"
+                      th:text="*{name}" th:value="*{name}"></option>
+            </select>
+            <span th:each="e : ${#fields.errors('nationalityName')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+
+          <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+            <label for="divisionName">Division: <sup>*</sup></label>
+            <select class="form-control" name="divisionName" id="divisionName">
+              <option value="">Choose</option>
+            </select>
+            <span th:each="e : ${#fields.errors('divisionName')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+
+          <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+            <label for="seasonName">Season: <sup>*</sup></label>
+            <select class="form-control" name="seasonName" id="seasonName">
+              <option value="">Choose</option>
+            </select>
+            <span th:each="e : ${#fields.errors('seasonName')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+
+          <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+            <label for="roundName">Rounds: <sup>*</sup></label>
+            <select class="form-control" name="roundName" id="roundName">
+              <option value="">Choose</option>
+            </select>
+            <span th:each="e : ${#fields.errors('roundName')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+
+          <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+            <label for="status">Status: <sup>*</sup></label>
+            <select class="form-control" name="status" id="status">
+              <option value="">Choose</option>
+              <option th:each="s : ${T(bg.example.football.model.entities.enums.StatusName).values()}"
+                      th:text="${s}" th:value="${s}">Shirt</option>
+            </select>
+            <span th:each="e : ${#fields.errors('status')}" th:text="${e}" class="invalid-feedback"></span>
+          </div>
+
+          <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+            <input type="submit" value="GO!" class="form-control bg bg-danger mt-4" />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 
 
+  <?php if (count($data) === 0) : ?>
+  <h3>No games found</h3>
+  <?php endif; ?>
+
+  <?php if (count($data) > 0) : ?>
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 center-text">
+      <h3 class="mt-2 mb-4">Latest Games</h3>
+    </div>
+  </div>
+  <?php foreach ($data['latestGames'] as $key => $value) : ?>
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#"><?php echo $value->nationality_name; ?></a></li>
+          <li class="breadcrumb-item"><a href="#"><?php echo $value->division_name; ?></a></li>
+          <li class="breadcrumb-item active" aria-current="page"><?php echo $value->season_name; ?></li>
+          <li class="breadcrumb-item"><a href="#"><?php echo $value->round_name . '(' . $value->round_status_name . ')'; ?></a></li>
+          <li class="breadcrumb-item"><a href="#"><?php echo date('d-M-Y', strtotime($value->round_start_date)); ?> - <?php echo date('d-M-Y', strtotime($value->round_end_date)); ?></a></li>
+          <li class="breadcrumb-item"><a href="#">Game date <?php echo date('d-M-Y', strtotime($value->game_date)); ?></a></li>
+        </ol>
+      </nav>
+
+      <div class="row mb-5">
+        <!-- blackWhite -->
+        <div class="col-lg-2 col-md-2 col-sm-2 text-center">
+          <img class="img-responsive img-fluid <?php echo ($value->home_team_goals < $value->away_team_goals) ? 'blackWhite' : '' ?>" src="<?php echo $value->home_team_logo; ?>" alt="home team logo" />
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 text-center">
+          <strong><?php echo $value->home_team_name; ?></strong>
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-1 text-center">
+          <?php echo ($value->home_team_goals > $value->away_team_goals) ? '<h3>' . $value->home_team_goals . '</h3>' : $value->home_team_goals; ?>
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-1 text-center">
+          <?php echo ($value->away_team_goals > $value->home_team_goals) ? '<h3>' . $value->away_team_goals . '</h3>' : $value->away_team_goals; ?>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 text-center">
+          <strong><?php echo $value->away_team_name; ?></strong>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 text-center">
+          <img class="img-responsive img-fluid <?php echo ($value->away_team_goals < $value->home_team_goals) ? 'blackWhite' : '' ?>" src="<?php echo $value->away_team_logo; ?>" alt="away team logo" />
+        </div>
+      </div>
+
+      <a href="/games/details/" class="btn btn-primary mb-5 mt-1">Details</a>
+      <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+        <a href="/games/edit/<?php echo $value->id; ?>" class="btn btn-warning mb-5 mt-1">Edit</a>
+        <button type="button" class="btn btn-danger mb-5 mt-1" data-toggle="modal" data-target="#deleteWarningModal<?php echo $value->id; ?>">
+          Delete
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="deleteWarningModal<?php echo $value->id; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteWarningModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteWarningModalLabel">Are you sure?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete game <?php echo $value->home_team_name . ' - ' . $value->away_team_name; ?> ?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="/games/delete/" class="btn btn-danger">Confirm</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </th:block>
+    </div>
+  </div>
+
+
+<!--<a href="/games/list/<?php echo $nextPage; ?>" class="btn btn-primary mb-5 mt-3">Next</a>-->
+<!--<a href="/games/list/<?php echo $prevPage; ?>" class="btn btn-primary mb-5 mt-3">Prev</a>-->
 
 </main>
 
