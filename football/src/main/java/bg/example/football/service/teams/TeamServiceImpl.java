@@ -52,4 +52,19 @@ public class TeamServiceImpl implements TeamService {
     public TeamEntity getOneByName(String name) {
         return this.teamRepository.getOneByName(name).orElse(null);
     }
+
+    @Override
+    public TeamViewModel getOneById(String id) {
+        return this.teamRepository.findById(id).stream().map(teamEntity ->
+                this.modelMapper.map(teamEntity, TeamViewModel.class)
+        ).findAny().orElse(null);
+    }
+
+    @Override
+    public List<TeamViewModel> getAllByDivisionId(String id) {
+        return this.teamRepository.findAllByDivisionId(id)
+                .stream().map(teamEntity ->
+                        this.modelMapper.map(teamEntity, TeamViewModel.class))
+                .collect(Collectors.toList());
+    }
 }

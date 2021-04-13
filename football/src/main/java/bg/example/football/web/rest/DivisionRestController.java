@@ -22,12 +22,20 @@ public class DivisionRestController implements DivisionNamespace {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<List<DivisionViewModel>> getAllByNationalityName(@PathVariable("name") String name) {
+    @GetMapping
+    public ResponseEntity<List<DivisionViewModel>> getAll() {
+        return
+                ResponseEntity
+                        .ok()
+                        .body(this.divisionService.getAll());
+    }
+
+    @GetMapping("/{nationalityId}")
+    public ResponseEntity<List<DivisionViewModel>> getAllByNationalityId(@PathVariable("nationalityId") String nationalityId) {
         return
                 ResponseEntity
                     .ok()
-                    .body(this.divisionService.getAllByNationalityName(name));
+                    .body(this.divisionService.getAllByNationalityId(nationalityId));
     }
 
 }

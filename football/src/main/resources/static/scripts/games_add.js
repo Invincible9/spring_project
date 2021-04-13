@@ -1,171 +1,129 @@
 $(document).ready(function() {
-    let homeTeamNationality = $('#homeTeamNationality').val();
-    alert(homeTeamNationality)
 
-    fetch("http://localhost:8080/divisions/" + homeTeamNationality)
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
-        })
-
-
-    let teams = [];
-    let divisions = [];
-    $.get(getNationalitiesURL, function(data) {
-        insertOptionsToSelect({
-            'data': data,
-            'selectId': '#homeTeamNationality'
-        });
-        insertOptionsToSelect({
-            'data': data,
-            'selectId': '#awayTeamNationality'
-        });
-        insertOptionsToSelect({
-            'data': data,
-            'selectId': '#nationality'
-        });
-    });
+    // let teams = [];
+    // let divisions = [];
+    // $.get(getNationalitiesURL, function(data) {
+    //     insertOptionsToSelect({
+    //         'data': data,
+    //         'selectId': '#homeTeamNationality'
+    //     });
+    //     insertOptionsToSelect({
+    //         'data': data,
+    //         'selectId': '#awayTeamNationality'
+    //     });
+    //     insertOptionsToSelect({
+    //         'data': data,
+    //         'selectId': '#nationality'
+    //     });
+    // });
 
 
-    //when choosing nationality then the divisions must appear
+    // when choosing nationality then the divisions must appear
     $('#homeTeamNationality').on('change', function() {
-        let selectedNationalityId = $(this).val();
-        $.get(getDivisionsByNationalityURL + selectedNationalityId, function(data) {
-            insertOptionsToSelect({
-                'data': data,
-                'selectId': '#homeTeamDivision'
-            });
-        });
+        let homeTeamNationalityId = $(this).val();
+        fetch("http://localhost:8080/divisions/" + homeTeamNationalityId)
+            .then(response => response.json())
+            .then(data => {
+                insertOptionsToSelect({
+                    'data': data,
+                    'selectId': '#homeTeamDivision',
+                    'name': 'Home Division'
+                });
+            })
     });
 
     $('#awayTeamNationality').on('change', function() {
-        let selectedNationalityId = $(this).val();
-        if(divisions.length > 0){
-            insertOptionsToSelect({
-                'data': divisions,
-                'selectId': '#homeTeamDivision'
-            });
-            return;
-        }
-        $.get(getDivisionsByNationalityURL + selectedNationalityId, function(data) {
-            insertOptionsToSelect({
-                'data': data,
-                'selectId': '#awayTeamDivision'
-            });
-        });
+        let awayTeamNationalityId = $(this).val();
+        fetch("http://localhost:8080/divisions/" + awayTeamNationalityId)
+            .then(response => response.json())
+            .then(data => {
+                insertOptionsToSelect({
+                    'data': data,
+                    'selectId': '#awayTeamDivision',
+                    'name': 'Away Division'
+                });
+            })
     });
 
-    //when choosing divion then the teams must appear
-    $('#homeTeamDivision').on('change', function() {
+    // //when choosing division then the teams must appear
+    $('#homeTeamDivision').on('change', function(el) {
         let selectedDivisionId = $(this).val();
-        $.get(getTeamsByDivisionURL + selectedDivisionId, function(data) {
-            teams = data;
-            if(data.length < 2){
-                $('#other_errors').addClass('alert alert-danger');
-                $('#other_errors').text('At least 2 teams are needed for a game. In this division there is only one. Please add more teams');
-                $('#submitBtn').attr('disabled', true);
-                return;
-            }
-            $('#submitBtn').attr('disabled', false);
-            insertOptionsToSelect({
-                'data': data,
-                'selectId': '#homeTeamChoose'
+        fetch("http://localhost:8080/teams/" + selectedDivisionId)
+            .then(response => response.json())
+            .then(data => {
+                insertOptionsToSelect({
+                    'data': data,
+                    'selectId': '#homeTeam',
+                    'name': 'Home Team'
+                });
             });
-        });
     });
 
 
+    // //when choosing division then the teams must appear
     $('#awayTeamDivision').on('change', function() {
         let selectedDivisionId = $(this).val();
-        if(teams.length > 0){
-            insertOptionsToSelect({
-                'data': teams,
-                'selectId': '#awayTeamChoose'
+        fetch("http://localhost:8080/teams/" + selectedDivisionId)
+            .then(response => response.json())
+            .then(data => {
+                insertOptionsToSelect({
+                    'data': data,
+                    'selectId': '#awayTeam',
+                    'name': 'Away Team'
+                });
             });
-            return;
-        }
+    });
 
-        $.get(getTeamsByDivisionURL + selectedDivisionId, function(data) {
-            if(data.length < 2){
-                $('#other_errors').addClass('alert alert-danger');
-                $('#other_errors').text('At least 2 teams are needed for a game. In this division there is only one. Please add more teams');
-                $('#submitBtn').attr('disabled', true);
-                return;
-            }
-            $('#submitBtn').attr('disabled', false);
-            insertOptionsToSelect({
-                'data': data,
-                'selectId': '#awayTeamChoose'
+    $('#homeTeam').on('change', function() {
+        let selectedTeamId = $(this).val();
+        fetch("http://localhost:8080/teams/team/" + selectedTeamId)
+            .then(response => response.json())
+            .then(data => {
+                let homeTeamLogoContainer = $('#homeTeamLogoCont');
+                homeTeamLogoContainer.empty();
+                homeTeamLogoContainer.append(`<img class="img-responsive img-fluid" src="${data.logoUrl}" width="100%" alt="missing image"/>`);
             });
-        });
     });
 
-
-    $('#homeTeamChoose').on('change', function() {
-        let homeTeamLogoContainer = $('#homeTeamLogoCont');
-        const homeTeamId = $(this).val();
-        $('#homeTeam').val(homeTeamId);
-        let homeTeamIndex = teams.findIndex(team => team.id === homeTeamId);
-        // let teamInfo = teams.filter(team => team.id === homeTeamId);
-        homeTeamLogoContainer.empty();
-        homeTeamLogoContainer.append(`<img class="img-responsive img-fluid" src="${teams[homeTeamIndex].logo}" />`);
-        // teams.splice(homeTeamIndex, 1);
-        // $(this).attr('disabled', true);
+    $('#awayTeam').on('change', function() {
+        let selectedTeamId = $(this).val();
+        fetch("http://localhost:8080/teams/team/" + selectedTeamId)
+            .then(response => response.json())
+            .then(data => {
+                let homeTeamLogoContainer = $('#awayTeamLogoCont');
+                homeTeamLogoContainer.empty();
+                homeTeamLogoContainer.append(`<img class="img-responsive img-fluid" src="${data.logoUrl}" width="100%" alt="missing image"/>`);
+            });
     });
 
-
-    //check if user is selected 2 equals teams for the game
-    $('#awayTeamChoose').on('change', function(){
-        const selectedAwayTeamId = $(this).val();
-        const selectedHomeTeamId = $('#homeTeam').val();
-        $('#awayTeam').val(selectedAwayTeamId);
-        $('#other_errors').text('');
-        let awayTeamLogoContainer = $('#awayTeamLogoCont');
-        let awayTeamIndex = teams.findIndex(team => team.id === selectedAwayTeamId);
-        awayTeamLogoContainer.empty();
-        awayTeamLogoContainer.append(`<img class="img-responsive img-fluid" src="${teams[awayTeamIndex].logo}" />`);
-        if(selectedAwayTeamId === selectedHomeTeamId){
-            $('#other_errors').removeClass('alert alert-danger');
-            $('#other_errors').addClass('alert alert-danger');
-            $('#other_errors').text('Home and Away teams cannot be equal');
-            $('#submitBtn').attr('disabled', true);
-            return;
-        }
-        $('#submitBtn').attr('disabled', false);
-        $('#other_errors').removeClass('alert alert-danger');
-        // teams.splice(selectedAwayTeamId, 1);
-        // $(this).attr('disabled', true);
+    $('#homeTeamScoreGoalsMinutes').on('change', function() {
+        $('#awayTeamAllowGoalsMinutes').val($(this).val());
     });
 
-    $('#home_team_score_goals_mins').on('change', function() {
-        $('#away_team_allow_goals_mins').val($(this).val());
+    $('#homeTeamAllowGoalsMinutes').on('change', function(){
+        $('#awayTeamScoreGoalsMinutes').val($(this).val());
     });
 
-    $('#home_team_allow_goals_mins').on('change', function(){
-        $('#away_team_score_goals_mins').val($(this).val());
+    $('#awayTeamAllowGoalsMinutes').on('change', function() {
+        $('#homeTeamScoreGoalsMinutes').val($(this).val());
     });
 
-    $('#away_team_allow_goals_mins').on('change', function() {
-        $('#home_team_score_goals_mins').val($(this).val());
+    $('#awayTeamScoreGoalsMinutes').on('change', function(){
+        $('#homeTeamAllowGoalsMinutes').val($(this).val());
     });
 
-    $('#away_team_score_goals_mins').on('change', function(){
-        $('#home_team_allow_goals_mins').val($(this).val());
+    $('#homeTeamPossession').on('change', function() {
+        $('#awayTeamPossession').val(100 - $(this).val());
     });
 
-    $('#home_team_possession').on('change', function() {
-        $('#away_team_possession').val(100 - $(this).val());
+    $('#awayTeamPossession').on('change', function() {
+        $('#homeTeamPossession').val(100 - $(this).val());
     });
 
-    $('#away_team_possession').on('change', function() {
-        $('#home_team_possession').val(100 - $(this).val());
-    });
-
-
-    $('#home_team_goals').on('change', function(){
+    $('#homeTeamGoals').on('change', function(){
         let homeTeamGoals = parseInt($(this).val());
-        let awayTeamGoals = parseInt($('#away_team_goals').val());
-        let gameWinnerSelect = $('#game_winner');
+        let awayTeamGoals = parseInt($('#awayTeamGoals').val());
+        let gameWinnerSelect = $('#w');
         if(homeTeamGoals > awayTeamGoals){
             gameWinnerSelect.val('1');
             return;
@@ -177,10 +135,10 @@ $(document).ready(function() {
         gameWinnerSelect.val('x');
     });
 
-    $('#away_team_goals').on('change', function(){
+    $('#awayTeamGoals').on('change', function(){
         let awayTeamGoals = parseInt($(this).val());
-        let homeTeamGoals = parseInt($('#home_team_goals').val());
-        let gameWinnerSelect = $('#game_winner');
+        let homeTeamGoals = parseInt($('#homeTeamGoals').val());
+        let gameWinnerSelect = $('#winner');
         if(homeTeamGoals > awayTeamGoals){
             gameWinnerSelect.val('1');
             return;
@@ -191,38 +149,47 @@ $(document).ready(function() {
         }
         gameWinnerSelect.val('x');
     });
-
 
     //about rounds
     $('#nationality').on('change', function() {
-        let selectedNationalityId = $(this).val();
-        $.get(getDivisionsByNationalityURL + selectedNationalityId, function(data) {
-            insertOptionsToSelect({
-                'data': data,
-                'selectId': '#division'
-            });
-        });
+        let nationalityId = $(this).val();
+        fetch("http://localhost:8080/divisions/" + nationalityId)
+            .then(response => response.json())
+            .then(data => {
+                insertOptionsToSelect({
+                    'data': data,
+                    'selectId': '#division',
+                    'name': 'Nationality'
+                });
+            })
     });
 
+    //about rounds
     $('#division').on('change', function() {
-        let selectedDivisionId = $(this).val();
-        $.get(getSeasonsByDivisionURL + selectedDivisionId, function(data) {
-            insertOptionsToSelect({
-                'data': data,
-                'selectId': '#season'
-            });
-        });
+        let divisionId = $(this).val();
+        console.log(divisionId)
+        fetch("http://localhost:8080/seasons/" + divisionId)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                insertOptionsToSelect({
+                    'data': data,
+                    'selectId': '#season',
+                    'name': 'Division'
+                });
+            })
     });
 
-    $('#season').on('change', function() {
-        let selectedSeasonId = $(this).val();
-        $.get(getRoundBySeasonURL + selectedSeasonId, function(data) {
-            insertOptionsToSelect({
-                'data': data,
-                'selectId': '#round'
-            });
-        });
-    });
+
+    // $('#season').on('change', function() {
+    //     let selectedSeasonId = $(this).val();
+    //     $.get(getRoundBySeasonURL + selectedSeasonId, function(data) {
+    //         insertOptionsToSelect({
+    //             'data': data,
+    //             'selectId': '#round'
+    //         });
+    //     });
+    // });
 
 
 });
@@ -230,13 +197,14 @@ $(document).ready(function() {
 function insertOptionsToSelect(info) {
     let {
         data,
-        selectId
+        selectId,
+        name
     } = info;
-    // $(selectId).val('');
+
     $(selectId).empty();
-    $('<option>').val('').text('Choose').appendTo(selectId);
-    for (context of data) {
-        // $('<option>').val(context.id).attr('disabled', true).text(context.name).appendTo(selectId);
+    $('<option>').val('').text('Choose ' + name).appendTo(selectId);
+    for (let context of data) {
+
         $('<option>').val(context.id).text(context.name).appendTo(selectId);
     }
 }

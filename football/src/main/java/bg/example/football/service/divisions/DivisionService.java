@@ -11,5 +11,6 @@ public interface DivisionService {
     void create(DivisionServiceModel divisionServiceModel) throws IOException;
     List<DivisionViewModel> getAll();
     DivisionEntity getOneByName(String name);
-    List<DivisionViewModel> getAllByNationalityName(String name);
+    DivisionViewModel getOneById(String id);
+    List<DivisionViewModel> getAllByNationalityId(String id);
 }

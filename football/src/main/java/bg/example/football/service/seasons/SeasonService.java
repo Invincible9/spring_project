@@ -11,4 +11,5 @@ public interface SeasonService {
     List<SeasonViewModel> getAll();
     SeasonEntity getOneByName(String name);
     SeasonViewModel getOneById(String id);
+    List<SeasonViewModel> getAllByDivisionId(String id);
 }

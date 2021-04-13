@@ -1,12 +1,10 @@
 package bg.example.football.model.view;
 
-import bg.example.football.model.entities.DivisionEntity;
-
 import java.time.LocalDate;
 
-public class SeasonViewModel {
+public class SeasonViewModel extends BaseViewModel {
     private String name;
-    private DivisionEntity division;
+    private DivisionViewModel division;
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -22,11 +20,11 @@ public class SeasonViewModel {
         return this;
     }
 
-    public DivisionEntity getDivision() {
+    public DivisionViewModel getDivision() {
         return division;
     }
 
-    public SeasonViewModel setDivision(DivisionEntity division) {
+    public SeasonViewModel setDivision(DivisionViewModel division) {
         this.division = division;
         return this;
     }

@@ -28,9 +28,9 @@
             <div class="form-group col-lg-6 col-md-6 col-sm-6">
               <label for="homeTeamNationality">Home Team Nationality: <sup>*</sup></label>
               <select class="form-control form-control-lg" name="homeTeamNationality" id="homeTeamNationality">
-                <option value="">Choose nationality</option>
+                <option value="">Choose Team nationality</option>
                 <option th:each="n : ${nationalities}" th:object="${n}"
-                        th:text="*{name}" th:value="*{name}"></option>
+                        th:text="*{name}" th:value="*{id}"></option>
               </select>
               <span th:each="e : ${#fields.errors('homeTeamNationality')}" th:text="${e}" class="invalid-feedback"></span>
             </div>
@@ -38,9 +38,9 @@
             <div class="form-group col-lg-6 col-md-6 col-sm-6">
               <label for="awayTeamNationality">Away Team Nationality: <sup>*</sup></label>
               <select class="form-control form-control-lg" name="awayTeamNationality" id="awayTeamNationality">
-                <option value="">Choose nationality</option>
+                <option value="">Choose Away nationality</option>
                 <option th:each="n : ${nationalities}" th:object="${n}"
-                        th:text="*{name}" th:value="*{name}"></option>
+                        th:text="*{name}" th:value="*{id}"></option>
               </select>
               <span th:each="e : ${#fields.errors('awayTeamNationality')}" th:text="${e}" class="invalid-feedback"></span>
             </div>
@@ -50,7 +50,7 @@
             <div class="form-group col-lg-6 col-md-6 col-sm-6">
               <label for="homeTeamDivision">Home Team Division: <sup>*</sup></label>
               <select class="form-control form-control-lg" name="homeTeamDivision" id="homeTeamDivision">
-                <option value="">Choose Division</option>
+                <option value="">Choose Team Division</option>
               </select>
               <span th:each="e : ${#fields.errors('homeTeamDivision')}" th:text="${e}" class="invalid-feedback"></span>
             </div>
@@ -58,7 +58,7 @@
             <div class="form-group col-lg-6 col-md-6 col-sm-6">
               <label for="awayTeamDivision">Away Team Division: <sup>*</sup></label>
               <select class="form-control form-control-lg" name="awayTeamDivision" id="awayTeamDivision">
-                <option value="">Choose Division</option>
+                <option value="">Choose Away Division</option>
               </select>
               <span th:each="e : ${#fields.errors('awayTeamDivision')}" th:text="${e}" class="invalid-feedback"></span>
             </div>
@@ -67,7 +67,7 @@
           <div class="row">
             <div class="form-group col-lg-6 col-md-6 col-sm-6">
               <label for="homeTeam">Home Team: <sup>*</sup></label>
-              <select class="form-control form-control-lg" id="homeTeam">
+              <select class="form-control form-control-lg" name="homeTeam" id="homeTeam">
                 <option value="">Choose Home Team</option>
               </select>
               <span th:each="e : ${#fields.errors('homeTeam')}" th:text="${e}" class="invalid-feedback"></span>
@@ -75,7 +75,7 @@
 
             <div class="form-group col-lg-6 col-md-6 col-sm-6">
               <label for="awayTeam">Away Team: <sup>*</sup></label>
-              <select class="form-control form-control-lg" id="awayTeam">
+              <select class="form-control form-control-lg" name="awayTeam" id="awayTeam">
                 <option value="">Choose Away Team</option>
               </select>
               <span th:each="e : ${#fields.errors('awayTeam')}" th:text="${e}" class="invalid-feedback"></span>
@@ -235,10 +235,10 @@
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 form-group">
               <label for="nationality">Nationality: <sup>*</sup></label>
-              <select class="form-control form-control-lg" name="nationality" id="nationality">
+              <select class="form-control form-control-lg" name="nationalityName" id="nationality">
                 <option value="">Choose nationality</option>
                 <option th:each="n : ${nationalities}" th:object="${n}"
-                        th:text="*{name}" th:value="*{name}"></option>
+                        th:text="*{name}" th:value="*{id}"></option>
               </select>
               <span th:each="e : ${#fields.errors('nationalityName')}" th:text="${e}" class="invalid-feedback"></span>
             </div>
@@ -246,8 +246,8 @@
 
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 form-group">
-              <label for="nationality">Division: <sup>*</sup></label>
-              <select class="form-control form-control-lg" name="division" id="division">
+              <label for="division">Division: <sup>*</sup></label>
+              <select class="form-control form-control-lg" name="divisionName" id="division">
                 <option value="">Choose division</option>
               </select>
               <span th:each="e : ${#fields.errors('divisionName')}" th:text="${e}" class="invalid-feedback"></span>
@@ -256,8 +256,8 @@
 
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 form-group">
-              <label for="nationality">Season: <sup>*</sup></label>
-              <select class="form-control form-control-lg" name="season" id="season">
+              <label for="season">Season: <sup>*</sup></label>
+              <select class="form-control form-control-lg" name="seasonName" id="season">
                 <option value="">Choose season</option>
               </select>
               <span th:each="e : ${#fields.errors('seasonName')}" th:text="${e}" class="invalid-feedback"></span>
@@ -266,8 +266,8 @@
 
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 form-group">
-              <label for="nationality">Round: <sup>*</sup></label>
-              <select class="form-control form-control-lg" name="round" id="round">
+              <label for="round">Round: <sup>*</sup></label>
+              <select class="form-control form-control-lg" name="roundName" id="round">
                 <option value="">Choose round</option>
               </select>
               <span th:each="e : ${#fields.errors('roundName')}" th:text="${e}" class="invalid-feedback"></span>
@@ -295,7 +295,7 @@
       </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+
     <script>
       // const getNationalitiesURL = '/nationalities/getNationalitiesJSON';
       // const getDivisionsByNationalityURL = '/divisions/getAllDivisionsByNationalityJSON/';

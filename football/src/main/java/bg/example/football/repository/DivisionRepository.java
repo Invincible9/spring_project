@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DivisionRepository extends JpaRepository<DivisionEntity, String> {
-    Optional<DivisionEntity> getOneByName(String name);
-    List<DivisionEntity> findAllByNationalityName(String name);
+    Optional<DivisionEntity> findOneByName(String name);
+    List<DivisionEntity> findAllByNationalityId(String name);
 }

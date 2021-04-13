@@ -11,4 +11,6 @@ public interface TeamService {
     void create(TeamServiceModel teamServiceModel) throws IOException;
     List<TeamViewModel> getAll();
     TeamEntity getOneByName(String name);
+    TeamViewModel getOneById(String id);
+    List<TeamViewModel> getAllByDivisionId(String id);
 }

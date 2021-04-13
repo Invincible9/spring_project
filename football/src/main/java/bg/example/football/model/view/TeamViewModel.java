@@ -1,6 +1,6 @@
 package bg.example.football.model.view;
 
-public class TeamViewModel {
+public class TeamViewModel extends BaseViewModel {
     private String name;
     private String logoUrl;
     private DivisionViewModel division;

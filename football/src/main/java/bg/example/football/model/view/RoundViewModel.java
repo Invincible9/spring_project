@@ -4,7 +4,7 @@ import bg.example.football.model.entities.enums.StatusName;
 
 import java.time.LocalDate;
 
-public class RoundViewModel {
+public class RoundViewModel extends BaseViewModel {
     private String name;
     private SeasonViewModel seasonViewModel;
     private StatusName status;
