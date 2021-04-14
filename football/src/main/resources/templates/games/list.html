@@ -32,12 +32,24 @@
 
   <div class="row">
     <div class="col-lg-8 mx-auto">
-      <a class="btn btn-primary mt-2 mb-5" href="/games/onlineGames">Online Games</a>
-      <a class="btn btn-primary mt-2 mb-5" href="/games/upcomingGames">Upcoming Games</a>
+      <p>Today </p>
+      <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+        <div class="btn-group" role="group">
+          <button id="btnTodayGamesGr" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Games
+          </button>
+          <div class="dropdown-menu" aria-labelledby="btnTodayGamesGr">
+            <a class="dropdown-item" th:href="@{/games/onlineGames}">Online</a>
+            <a class="dropdown-item" th:href="@{/games/upcomingGames}">Upcoming</a>
+            <a class="dropdown-item" th:href="@{/games/finishedGames}">Finished</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+  <hr />
 
-  <div th:each="g : ${games}" th:object="${g}" class="row">
+  <div th:object="${searchBindingModel}" class="row">
     <div class="col-lg-8 mx-auto">
       <form action='filteredGames' method='get'>
         <div class="row">
@@ -94,56 +106,51 @@
     </div>
   </div>
 
+  <h3 class="col-lg-8 mx-auto center-text" th:if="${games.isEmpty()}">No games found</h3>
 
-  <?php if (count($data) === 0) : ?>
-  <h3>No games found</h3>
-  <?php endif; ?>
-
-  <?php if (count($data) > 0) : ?>
   <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 center-text">
+    <div class="col-lg-8 mx-auto center-text">
       <h3 class="mt-2 mb-4">Latest Games</h3>
     </div>
   </div>
-  <?php foreach ($data['latestGames'] as $key => $value) : ?>
-  <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12">
+
+  <div th:each="g : ${games}" th:object="${g}" class="row">
+    <div class="col-lg-8 mx-auto">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#"><?php echo $value->nationality_name; ?></a></li>
-          <li class="breadcrumb-item"><a href="#"><?php echo $value->division_name; ?></a></li>
-          <li class="breadcrumb-item active" aria-current="page"><?php echo $value->season_name; ?></li>
-          <li class="breadcrumb-item"><a href="#"><?php echo $value->round_name . '(' . $value->round_status_name . ')'; ?></a></li>
-          <li class="breadcrumb-item"><a href="#"><?php echo date('d-M-Y', strtotime($value->round_start_date)); ?> - <?php echo date('d-M-Y', strtotime($value->round_end_date)); ?></a></li>
-          <li class="breadcrumb-item"><a href="#">Game date <?php echo date('d-M-Y', strtotime($value->game_date)); ?></a></li>
+          <li class="breadcrumb-item"><a href="#" th:text="*{round.getSeason().getDivision().getNationality().getName()}"></a></li>
+          <li class="breadcrumb-item"><a href="#" th:text="*{round.getSeason().getDivision().getName()}"></a></li>
+          <li class="breadcrumb-item active" aria-current="page" th:text="*{round.getSeason().getName()}"></li>
+          <li class="breadcrumb-item"><a href="#" th:text="|*{round.getName()} (*{status})|"></a></li>
+          <li class="breadcrumb-item"><a href="#" th:text="|Game date *{date}|"></a></li>
         </ol>
       </nav>
 
       <div class="row mb-5">
         <!-- blackWhite -->
         <div class="col-lg-2 col-md-2 col-sm-2 text-center">
-          <img class="img-responsive img-fluid <?php echo ($value->home_team_goals < $value->away_team_goals) ? 'blackWhite' : '' ?>" src="<?php echo $value->home_team_logo; ?>" alt="home team logo" />
+          <img th:class="(${g.awayTeamGoals} < ${g.homeTeamGoals} ? 'img-responsive img-fluid blackWhite blackWhite' : 'img-responsive img-fluid blackWhite')" th:src="*{homeTeam.logoUrl}" alt="home team logo" />
         </div>
         <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-          <strong><?php echo $value->home_team_name; ?></strong>
+          <strong th:text="*{homeTeam.name}"></strong>
         </div>
         <div class="col-lg-1 col-md-1 col-sm-1 text-center">
-          <?php echo ($value->home_team_goals > $value->away_team_goals) ? '<h3>' . $value->home_team_goals . '</h3>' : $value->home_team_goals; ?>
+          <h3 th:text="*{homeTeamGoals}"></h3>
         </div>
         <div class="col-lg-1 col-md-1 col-sm-1 text-center">
-          <?php echo ($value->away_team_goals > $value->home_team_goals) ? '<h3>' . $value->away_team_goals . '</h3>' : $value->away_team_goals; ?>
+          <h3 th:text="*{awayTeamGoals}"></h3>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-          <strong><?php echo $value->away_team_name; ?></strong>
+          <strong th:text="*{awayTeam.name}"></strong>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-2 text-center">
-          <img class="img-responsive img-fluid <?php echo ($value->away_team_goals < $value->home_team_goals) ? 'blackWhite' : '' ?>" src="<?php echo $value->away_team_logo; ?>" alt="away team logo" />
+          <img th:class="(${g.awayTeamGoals} > ${g.homeTeamGoals} ? 'img-responsive img-fluid blackWhite' : 'img-responsive img-fluid')" th:src="*{awayTeam.logoUrl}" alt="away team logo" />
         </div>
       </div>
 
       <a href="/games/details/" class="btn btn-primary mb-5 mt-1">Details</a>
       <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-        <a href="/games/edit/<?php echo $value->id; ?>" class="btn btn-warning mb-5 mt-1">Edit</a>
+        <a href="/games/edit/" class="btn btn-warning mb-5 mt-1">Edit</a>
         <button type="button" class="btn btn-danger mb-5 mt-1" data-toggle="modal" data-target="#deleteWarningModal<?php echo $value->id; ?>">
           Delete
         </button>
@@ -158,7 +165,7 @@
                 </button>
               </div>
               <div class="modal-body">
-                Are you sure you want to delete game <?php echo $value->home_team_name . ' - ' . $value->away_team_name; ?> ?
+                <span th:text="|Are you sure you want to delete game *{homeTeam} - *{awayTeam} ?|"></span>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

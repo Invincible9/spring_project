@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+        <th:block th:include="~{/fragments/nav}"></th:block>
+    </nav>
+</header>
+
+<main>
+
+<div class="row text-center">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <h3 id="label">Currently not online games found</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="table-responsive">
+            <table class="table" id="gamesCont"></table>
+        </div>
+    </div>
+</div>
+
+<script>
+    let date = new Date();
+    const url = 'https://prod-public-api.livescore.com/v1/api/react/date/soccer/20210310/2.00';
+
+    // const url = 'https://prod-public-api.livescore.com/v1/api/react/date/soccer/' +
+    //     date.getFullYear() + date.getMonth() + 1 +  date.getDay() + '/2.00';
+
+    fetch(url)
+        .then(response => response.json())
+        .then(games => console.log(games));
+
+
+    const startedGames = [];
+    const gameStatuses = {
+        'NS': 'Not Started',
+        'FT': 'Finished',
+        'HT': 'Half Time',
+        'Postp.': 'Postpended',
+        'Canc.': 'Cancelled',
+        'AET': 'After Extra Time',
+        'AAW': 'Awarded Away Win',
+        'AP': 'After Penalties'
+    };
+
+    function processingData(games) {
+        // console.log(typeof games.data);
+        if(!games.success){
+            console.log('no data available');
+            return;
+        }
+        const stages = JSON.parse(games.data).Stages;
+        for (let stage of stages) {
+            for (let event of stage.Events) {
+                if (!gameStatuses.hasOwnProperty(event.Eps) || event.Eps == 'HT') {
+                    const gameInfo = {
+                        gameId: event.Eid,
+                        minutes: event.Eps,
+                        homeTeam: event.T1[0].Nm,
+                        homeTeamGoals: event.Tr1 ? event.Tr1 : 0,
+                        awayTeam: event.T2[0].Nm,
+                        awayTeamGoals: event.Tr2 ? event.Tr2 : 0,
+                        championship: event.Stg.Cnm,
+                        round: event.Stg.Sdn,
+                        hasComments: event.Com ? event.Com.length > 0 ? true : false  : false
+                    };
+                    startedGames.push(gameInfo);
+                    // startedGames.push(event);
+                }
+            }
+            // console.log(stage.Events);
+        }
+
+        // console.log(startedGames);
+        appendToDom(startedGames);
+    }
+
+    function appendToDom(games){
+        if(games && games.length > 0){
+            document.getElementById('label').innerText = games.length + ' games found';
+        }
+
+        let table = document.getElementById('gamesCont');
+        for(let game of games){
+            let tr = document.createElement('tr');
+            let th = document.createElement('th');
+            th.innerText = game.championship + ' ' + game.round;
+            tr.appendChild(th);
+            table.appendChild(tr);
+            tr = document.createElement('tr');
+            let td = document.createElement('td');
+            td.innerText = game.minutes;
+            tr.appendChild(td);
+            td = document.createElement('td');
+            td.innerText = game.homeTeam;
+            tr.appendChild(td);
+            td = document.createElement('td');
+            td.innerText = game.homeTeamGoals;
+            tr.appendChild(td);
+            td = document.createElement('td');
+            td.innerText = game.awayTeamGoals;
+            tr.appendChild(td);
+            td = document.createElement('td');
+            td.innerText = game.awayTeam;
+            tr.appendChild(td);
+            td = document.createElement('td');
+            let linkDetails = document.createElement('a');
+            linkDetails.innerText = 'Details';
+            linkDetails.setAttribute('class', 'btn btn-primary');
+            linkDetails.setAttribute('href', `/games/gameDetails/${game.gameId}`);
+            td.appendChild(linkDetails);
+            tr.appendChild(td);
+            table.appendChild(tr);
+            if(game.hasComments){
+                tr = document.createElement('tr');
+                tr.setAttribute('class', 'text-center text-primary');
+                td = document.createElement('td');
+                td.innerText = 'Comments Available';
+                tr.appendChild(td);
+                table.appendChild(tr);
+            }
+        }
+    }
+
+
+</script>
+
+</main>
+
+<footer class="footer bg-blur">
+    <th:block th:include="~{/fragments/footer}"></th:block>
+</footer>
+</body>
+</html>

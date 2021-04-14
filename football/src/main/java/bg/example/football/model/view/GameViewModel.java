@@ -1,5 +1,6 @@
 package bg.example.football.model.view;
 
+import bg.example.football.model.entities.RoundEntity;
 import bg.example.football.model.entities.TeamEntity;
 import bg.example.football.model.entities.enums.StatusName;
 
@@ -32,10 +33,7 @@ public class GameViewModel {
     private Integer awayTeamPossession;
 
     private String winner;
-    private String nationalityName;
-    private String divisionName;
-    private String seasonName;
-    private String roundName;
+    private RoundEntity round;
     private StatusName status;
 
     public GameViewModel() {
@@ -221,39 +219,12 @@ public class GameViewModel {
         return this;
     }
 
-    public String getNationalityName() {
-        return nationalityName;
+    public RoundEntity getRound() {
+        return round;
     }
 
-    public GameViewModel setNationalityName(String nationalityName) {
-        this.nationalityName = nationalityName;
-        return this;
-    }
-
-    public String getDivisionName() {
-        return divisionName;
-    }
-
-    public GameViewModel setDivisionName(String divisionName) {
-        this.divisionName = divisionName;
-        return this;
-    }
-
-    public String getSeasonName() {
-        return seasonName;
-    }
-
-    public GameViewModel setSeasonName(String seasonName) {
-        this.seasonName = seasonName;
-        return this;
-    }
-
-    public String getRoundName() {
-        return roundName;
-    }
-
-    public GameViewModel setRoundName(String roundName) {
-        this.roundName = roundName;
+    public GameViewModel setRound(RoundEntity round) {
+        this.round = round;
         return this;
     }
 

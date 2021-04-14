@@ -40,7 +40,7 @@
       <p class="mb-1" th:text="|Round starting date: *{startDate}|"></p>
       <p class="mb-1" th:text="|Round ending date: *{startDate}|"></p>
       <small th:text="|Status of the round: *{status.name()}.|"></small>
-      <small th:text="|Round is from *{seasonViewModel.name} from *{seasonViewModel.getDivision().name} from *{seasonViewModel.getDivision().getNationality().name} ?|"></small>
+      <small th:text="|Round is from *{seasonViewModel.getName()} from *{seasonViewModel.getDivision().getName()} ?|"></small>
     </a>
     <p>
       <a href="/rounds/roundGames/?round_id=<?php echo $value->id; ?>&page=1" class="btn btn-primary mb-5 mt-1">Show Games</a>

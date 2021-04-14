@@ -32,6 +32,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.
+                cors().
+                and().
+//                csrf().disable().
                 authorizeRequests().
                 // allow access to static resources to anyone
                         requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll().

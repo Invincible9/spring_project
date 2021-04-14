@@ -1,10 +1,10 @@
-input:valid {
-    border: lawngreen solid 1px;
-}
+/*input:valid {*/
+/*    border: lawngreen solid 1px;*/
+/*}*/
 
-input:invalid {
-    border: red solid 1px;
-}
+/*input:invalid {*/
+/*    border: red solid 1px;*/
+/*}*/
 
 /*input:invalid:required {*/
 /*    background-image: linear-gradient(to right, gray, white);*/

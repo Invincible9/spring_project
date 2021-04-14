@@ -1,23 +1,5 @@
 $(document).ready(function() {
 
-    // let teams = [];
-    // let divisions = [];
-    // $.get(getNationalitiesURL, function(data) {
-    //     insertOptionsToSelect({
-    //         'data': data,
-    //         'selectId': '#homeTeamNationality'
-    //     });
-    //     insertOptionsToSelect({
-    //         'data': data,
-    //         'selectId': '#awayTeamNationality'
-    //     });
-    //     insertOptionsToSelect({
-    //         'data': data,
-    //         'selectId': '#nationality'
-    //     });
-    // });
-
-
     // when choosing nationality then the divisions must appear
     $('#homeTeamNationality').on('change', function() {
         let homeTeamNationalityId = $(this).val();
@@ -159,7 +141,7 @@ $(document).ready(function() {
                 insertOptionsToSelect({
                     'data': data,
                     'selectId': '#division',
-                    'name': 'Nationality'
+                    'name': 'Division'
                 });
             })
     });
@@ -167,30 +149,31 @@ $(document).ready(function() {
     //about rounds
     $('#division').on('change', function() {
         let divisionId = $(this).val();
-        console.log(divisionId)
         fetch("http://localhost:8080/seasons/" + divisionId)
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 insertOptionsToSelect({
                     'data': data,
                     'selectId': '#season',
-                    'name': 'Division'
+                    'name': 'Season'
                 });
             })
     });
 
 
-    // $('#season').on('change', function() {
-    //     let selectedSeasonId = $(this).val();
-    //     $.get(getRoundBySeasonURL + selectedSeasonId, function(data) {
-    //         insertOptionsToSelect({
-    //             'data': data,
-    //             'selectId': '#round'
-    //         });
-    //     });
-    // });
-
+    //about rounds
+    $('#season').on('change', function() {
+        let seasonId = $(this).val();
+        fetch("http://localhost:8080/rounds/" + seasonId)
+            .then(response => response.json())
+            .then(data => {
+                insertOptionsToSelect({
+                    'data': data,
+                    'selectId': '#round',
+                    'name': 'Round'
+                });
+            })
+    });
 
 });
 
@@ -204,7 +187,6 @@ function insertOptionsToSelect(info) {
     $(selectId).empty();
     $('<option>').val('').text('Choose ' + name).appendTo(selectId);
     for (let context of data) {
-
         $('<option>').val(context.id).text(context.name).appendTo(selectId);
     }
 }

@@ -10,4 +10,6 @@ public interface RoundService {
     void create(RoundServiceModel roundServiceModel);
     List<RoundViewModel> getAll();
     RoundEntity getOneByName(String name);
+    RoundViewModel getOneById(String id);
+    List<RoundViewModel> getAllBySeasonId(String id);
 }

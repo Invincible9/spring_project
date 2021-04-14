@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="~{/fragments/head}"></th:block>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+        <th:block th:include="~{/fragments/nav}"></th:block>
+    </nav>
+</header>
+
+<main>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="table-responsive">
+                <table class="table" id="game"></table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="table-responsive">
+                <table class="table" id="comments"></table>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const url = '<?php echo URLROOT; ?>/games/onlineGameDetailsJSON/<?php echo $data['id']; ?>';
+        const gameStatuses = {
+            'NS': 'Not Started',
+            'FT': 'Finished',
+            'HT': 'Half Time',
+            'Postp.': 'Postpended',
+            'Canc.': 'Cancelled',
+            'AET': 'After Extra Time',
+            'AAW': 'Awarded Away Win',
+            'AP': 'After Penalties'
+        };
+        const abbreviations = {
+            shotsOnTarget: 'Shon',
+            shotsOffTarget: 'Shof',
+            possession: 'Pss',
+            corners: 'Cos',
+            homeTeam: 'T1',
+            homeTeamGoals: 'Tr1',
+            awayTeam: 'T2',
+            awayTeamGoals: 'Tr2',
+            name: 'Nm',
+            gameStatus: 'Eps',
+            comments: 'Com',
+            yellowCards: 'Ycs',
+            redCards: 'Rcs',
+            crossess: 'Crs',
+            counterAttacks: 'Att',
+            goalkeeperSaves: 'Gks'
+        };
+
+        const gameInfo = {
+            homeTeam: {
+                name: '',
+                goals: 'no info',
+                shotsOn: 'no info',
+                shotsOff: 'no info',
+                possession: 'no info',
+                corners: 'no info',
+                yellowCards: 'no info',
+                redCards: 'no info',
+                crossess: 'no info',
+                counterAttacks: 'no info',
+                goalkeeperSaves: 'no info'
+            },
+            awayTeam: {
+                name: '',
+                goals: 'no info',
+                shotsOn: 'no info',
+                shotsOff: 'no info',
+                possession: 'no info',
+                corners: 'no info',
+                yellowCards: 'no info',
+                redCards: 'no info',
+                crossess: 'no info',
+                counterAttacks: 'no info',
+                goalkeeperSaves: 'no info'
+            },
+            status: '',
+            comments: []
+        };
+
+        function processingData(resp) {
+            let {
+                homeTeam,
+                awayTeam
+            } = gameInfo;
+
+            const game = JSON.parse(resp.data);
+            const stats = game.Stat;
+            // console.log(stats);
+            // return;
+            homeTeam.name = game[abbreviations.homeTeam][0] ? game[abbreviations.homeTeam][0][abbreviations.name] : '';
+            homeTeam.goals = game[abbreviations.homeTeamGoals] ? game[abbreviations.homeTeamGoals] : 0;
+            awayTeam.name = game[abbreviations.awayTeam][0][abbreviations.name] ? game[abbreviations.awayTeam][0][abbreviations.name] : '';
+            awayTeam.goals = game[abbreviations.awayTeamGoals] ? game[abbreviations.awayTeamGoals] : 0;
+
+
+            if (stats) {
+                homeTeam.shotsOn = stats[0][abbreviations.shotsOnTarget] ? stats[0][abbreviations.shotsOnTarget] : 'no info';
+
+                homeTeam.shotsOff = stats[0][abbreviations.shotsOffTarget] ? stats[0][abbreviations.shotsOffTarget] : 'no info';
+
+                homeTeam.possession = stats[0][abbreviations.possession] ? stats[0][abbreviations.possession] : 'no info';
+
+                homeTeam.corners = stats[0][abbreviations.corners] ? stats[0][abbreviations.corners] : 'no info';
+
+                homeTeam.yellowCards = stats[0][abbreviations.yellowCards] ? stats[0][abbreviations.yellowCards] : stats[0][abbreviations.yellowCards] == 0 ? 0 : 'no info';
+
+                homeTeam.redCards = stats[0][abbreviations.redCards] ? stats[0][abbreviations.redCards] : stats[0][abbreviations.redCards] == 0 ? 0 : 'no info';
+
+                homeTeam.crossess = stats[0][abbreviations.crossess] ? stats[0][abbreviations.crossess] : stats[0][abbreviations.crossess] == 0 ? 0 : 'no info';
+
+                homeTeam.counterAttacks = stats[0][abbreviations.counterAttacks] ? stats[0][abbreviations.counterAttacks] : stats[0][abbreviations.counterAttacks] == 0 ? 0 : 'no info';
+
+                homeTeam.goalkeeperSaves = stats[0][abbreviations.goalkeeperSaves] ? stats[0][abbreviations.goalkeeperSaves] : stats[0][abbreviations.goalkeeperSaves] == 0 ? 0 : 'no info';
+
+
+                awayTeam.shotsOn = stats[1][abbreviations.shotsOnTarget] ? stats[1][abbreviations.shotsOnTarget] : 'no info';
+
+                awayTeam.shotsOff = stats[1][abbreviations.shotsOffTarget] ? stats[1][abbreviations.shotsOffTarget] : 'no info';
+
+                awayTeam.possession = stats[1][abbreviations.possession] ? stats[1][abbreviations.possession] : 'no info';
+
+                awayTeam.corners = stats[1][abbreviations.corners] ? stats[1][abbreviations.corners] : 'no info';
+
+                awayTeam.yellowCards = stats[1][abbreviations.yellowCards] ? stats[1][abbreviations.yellowCards] : stats[1][abbreviations.yellowCards] == 0 ? 0 : 'no info';
+
+                awayTeam.redCards = stats[1][abbreviations.redCards] ? stats[1][abbreviations.redCards] : stats[1][abbreviations.redCards] == 0 ? 0 : 'no info';
+
+                awayTeam.crossess = stats[1][abbreviations.crossess] ? stats[1][abbreviations.crossess] : stats[1][abbreviations.crossess] == 0 ? 0 : 'no info';
+
+                awayTeam.counterAttacks = stats[1][abbreviations.counterAttacks] ? stats[1][abbreviations.counterAttacks] : stats[1][abbreviations.counterAttacks] == 0 ? 0 : 'no info';
+
+                awayTeam.goalkeeperSaves = stats[1][abbreviations.goalkeeperSaves] ? stats[1][abbreviations.goalkeeperSaves] : stats[1][abbreviations.goalkeeperSaves] == 0 ? 0 : 'no info';
+
+            }
+
+            gameInfo.status = game.Eps ? gameStatuses[game.Eps] ? gameStatuses[game.Eps] : game.Eps : '';
+
+
+            gameInfo.comments = game.Com ? game.Com.slice(0, 9) : [];
+            addComments(gameInfo.comments);
+            addGameDetails({gameInfo: gameInfo, home: homeTeam, away: awayTeam});
+            console.log(gameInfo);
+        }
+
+
+        function addComments(comments) {
+            const commTable = document.getElementById('comments');
+            let tr = document.createElement('tr');
+            tr.setAttribute('class', 'text-center');
+            let th = document.createElement('th');
+            th.innerText = 'Minutes';
+            tr.appendChild(th);
+            th = document.createElement('th');
+            th.innerText = 'Comment';
+            tr.appendChild(th);
+            commTable.appendChild(tr);
+            if (!comments) return;
+            for(let comment of comments){
+                let tr = document.createElement('tr');
+                // tr.setAttribute('class', 'text-center');
+                let td = document.createElement('td');
+                td.innerText = comment.Min ? comment.Min : '';
+                tr.appendChild(td);
+                td = document.createElement('td');
+                td.innerText = comment.Txt;
+                tr.appendChild(td);
+                commTable.appendChild(tr);
+            }
+        }
+
+        function addGameDetails(config){
+            const { gameInfo, home, away } = config;
+            const gameTable = document.getElementById('game');
+            let tr = document.createElement('tr');
+            tr.setAttribute('class', 'text-center');
+            let th = document.createElement('th');
+            th.innerHTML = gameInfo.status;
+            tr.appendChild(th);
+            th = document.createElement('th');
+            th.innerText = home.name + ' ' + home.goals +  ' - ' + away.goals + ' ' + away.name;
+            tr.appendChild(th);
+            gameTable.appendChild(tr);
+            if(!Object.keys(home)) return;
+            for(let stat of Object.keys(home)){
+                let tr = document.createElement('tr');
+                tr.setAttribute('class', 'text-center');
+                let td = document.createElement('td');
+                td.innerText = home[stat];
+                tr.appendChild(td);
+                td = document.createElement('td');
+                td.innerHTML = '<strong>' + stat + '</strong>';
+                tr.appendChild(td);
+                td = document.createElement('td');
+                td.innerText = away[stat];
+                tr.appendChild(td);
+                gameTable.appendChild(tr);
+            }
+        }
+
+
+
+        fetch(url)
+            .then(response => response.json())
+            .then(games => processingData(games));
+    </script>
+
+
+
+</main>
+
+<footer class="footer bg-blur">
+    <th:block th:include="~{/fragments/footer}"></th:block>
+</footer>
+</body>
+</html>

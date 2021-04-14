@@ -38,7 +38,7 @@ public class RoundServiceImpl implements RoundService {
 
     @Override
     public List<RoundViewModel> getAll() {
-        return this.roundRepository.findAll()
+        var all = this.roundRepository.findAll()
                 .stream().map(roundEntity -> {
                     RoundViewModel roundViewModel = this.modelMapper.map(roundEntity, RoundViewModel.class);
                     SeasonViewModel seasonViewModel = this.seasonService.getOneById(roundEntity.getSeason().getId());
@@ -46,10 +46,31 @@ public class RoundServiceImpl implements RoundService {
                     return roundViewModel;
                 })
                 .collect(Collectors.toList());
+        return all;
     }
 
     @Override
     public RoundEntity getOneByName(String name) {
         return this.roundRepository.findByName(name).orElse(null);
+    }
+
+    @Override
+    public RoundViewModel getOneById(String id) {
+        return this.roundRepository.findById(id)
+                .stream().map(roundEntity ->
+                        this.modelMapper.map(roundEntity, RoundViewModel.class))
+                .findFirst().orElse(null);
+    }
+
+    @Override
+    public List<RoundViewModel> getAllBySeasonId(String id) {
+        return this.roundRepository.findAllBySeasonId(id)
+                .stream().map(roundEntity -> {
+                    RoundViewModel roundViewModel = this.modelMapper.map(roundEntity, RoundViewModel.class);
+                    SeasonViewModel seasonViewModel = this.seasonService.getOneById(id);
+                    roundViewModel.setSeasonViewModel(seasonViewModel);
+                    return roundViewModel;
+                })
+                .collect(Collectors.toList());
     }
 }

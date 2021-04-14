@@ -20,6 +20,14 @@ public class SeasonRestController implements SeasonNamespace {
         this.modelMapper = modelMapper;
     }
 
+    @GetMapping
+    public ResponseEntity<List<SeasonViewModel>> getAll() {
+        return
+                ResponseEntity
+                        .ok()
+                        .body(this.seasonService.getAll());
+    }
+
     @GetMapping("/{divisionId}")
     public ResponseEntity<List<SeasonViewModel>> getAllByDivisionId(@PathVariable("divisionId") String divisionId) {
         return
