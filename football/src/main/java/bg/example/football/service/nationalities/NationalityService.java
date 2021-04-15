@@ -11,8 +11,8 @@ import java.util.List;
 public interface NationalityService {
     void create(NationalityServiceModel nationalityServiceModel) throws IOException;
     boolean edit(NationalityServiceModel nationalityServiceModel, String id) throws IOException;
+    void remove(String id);
     List<NationalityViewModel> getAll();
     NationalityEntity getOneByName(String name);
     NationalityViewModel getOneById(String id);
-    void remove(String id);
 }

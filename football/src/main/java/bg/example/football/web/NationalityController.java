@@ -58,7 +58,7 @@ public class NationalityController {
         }
 
         this.nationalityService.create(this.modelMapper.map(nationalityBindingModel, NationalityServiceModel.class));
-
+        redirectAttributes.addFlashAttribute("success", "Nationality created successfully!");
         return "redirect:list";
     }
 
@@ -84,7 +84,7 @@ public class NationalityController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.nationalityBindingModel", bindingResult);
             return "redirect:/nationalities/edit/" + id;
         }
-
+        redirectAttributes.addFlashAttribute("success", "Nationality edited successfully!");
         return "redirect:/nationalities/list";
     }
 

@@ -2,7 +2,7 @@ package bg.example.football.model.view;
 
 public class NationalityViewModel extends BaseViewModel {
     private String name;
-    private String logo;
+    private String logoUrl;
 
     public NationalityViewModel() {
     }
@@ -15,11 +15,12 @@ public class NationalityViewModel extends BaseViewModel {
         this.name = name;
     }
 
-    public String getLogo() {
-        return logo;
+    public String getLogoUrl() {
+        return logoUrl;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
+    public NationalityViewModel setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+        return this;
     }
 }

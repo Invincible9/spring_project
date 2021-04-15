@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface DivisionService {
     void create(DivisionServiceModel divisionServiceModel) throws IOException;
+    void edit(DivisionServiceModel divisionServiceModel, String id) throws IOException;
+    void remove(String id);
     List<DivisionViewModel> getAll();
     DivisionEntity getOneByName(String name);
     DivisionViewModel getOneById(String id);

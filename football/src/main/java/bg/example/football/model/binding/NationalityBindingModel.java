@@ -10,6 +10,8 @@ public class NationalityBindingModel {
 
     private MultipartFile logo;
 
+    private String logoUrl;
+
     public NationalityBindingModel() {
     }
 
@@ -27,5 +29,14 @@ public class NationalityBindingModel {
 
     public void setLogo(MultipartFile logo) {
         this.logo = logo;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public NationalityBindingModel setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+        return this;
     }
 }

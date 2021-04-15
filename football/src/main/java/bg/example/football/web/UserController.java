@@ -67,7 +67,7 @@ public class UserController {
         if (!this.userService.exist(userRegisterBindingModel.getEmail())) {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", userRegisterBindingModel);
             redirectAttributes.addFlashAttribute("userExistsError", true);
-
+            redirectAttributes.addFlashAttribute("error", "User with this email already exists!");
             return "redirect:register";
         }
 

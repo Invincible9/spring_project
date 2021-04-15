@@ -10,11 +10,12 @@ public class DivisionBindingModel {
     @Length(min = 3, message = "Full Name length must be between 3 and 20 characters (inclusive 3 and 20).")
     private String name;
 
-    @NotNull
     private MultipartFile logo;
 
     @NotNull(message = "Enter valid nationality name!")
     private String nationalityName;
+
+    private String logoUrl;
 
     public DivisionBindingModel() {
     }
@@ -41,5 +42,14 @@ public class DivisionBindingModel {
 
     public void setNationalityName(String nationalityName) {
         this.nationalityName = nationalityName;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public DivisionBindingModel setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+        return this;
     }
 }

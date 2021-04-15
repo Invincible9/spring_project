@@ -4,6 +4,7 @@ import bg.example.football.model.entities.DivisionEntity;
 import bg.example.football.model.entities.NationalityEntity;
 import bg.example.football.model.service.DivisionServiceModel;
 import bg.example.football.model.view.DivisionViewModel;
+import bg.example.football.model.view.NationalityViewModel;
 import bg.example.football.repository.DivisionRepository;
 import bg.example.football.service.CloudinaryService;
 import bg.example.football.service.nationalities.NationalityService;
@@ -44,6 +45,24 @@ public class DivisionServiceImpl implements DivisionService {
     }
 
     @Override
+    public void edit(DivisionServiceModel divisionServiceModel, String id) throws IOException {
+        DivisionEntity divisionEntity = this.divisionRepository.findById(id).orElse(null);
+        NationalityEntity nationalityEntity = this.nationalityService.getOneByName(divisionServiceModel.getNationalityName());
+        if(!("").equals(divisionServiceModel.getLogo().getOriginalFilename())) {
+            String url = this.cloudinaryService.uploadImage(divisionServiceModel.getLogo());
+            divisionEntity.setLogoUrl(url);
+        }
+        divisionEntity.setNationality(nationalityEntity);
+        divisionEntity.setName(divisionServiceModel.getName());
+        this.divisionRepository.save(divisionEntity);
+    }
+
+    @Override
+    public void remove(String id) {
+        this.divisionRepository.deleteById(id);
+    }
+
+    @Override
     public List<DivisionViewModel> getAll() {
         return this.divisionRepository.findAll()
                 .stream().map(divisionEntity ->
@@ -58,8 +77,12 @@ public class DivisionServiceImpl implements DivisionService {
 
     @Override
     public DivisionViewModel getOneById(String id) {
-        return this.divisionRepository.findById(id).stream().map(divisionEntity ->
-                this.modelMapper.map(divisionEntity, DivisionViewModel.class)
+        return this.divisionRepository.findById(id).stream().map(divisionEntity -> {
+                    DivisionViewModel divisionViewModel = this.modelMapper.map(divisionEntity, DivisionViewModel.class);
+                    NationalityViewModel nationalityViewModel = this.nationalityService.getOneById(divisionEntity.getNationality().getId());
+                    divisionViewModel.setNationalityViewModel(nationalityViewModel);
+                    return divisionViewModel;
+                }
         ).findAny().orElse(null);
     }
 
@@ -70,4 +93,6 @@ public class DivisionServiceImpl implements DivisionService {
                         this.modelMapper.map(divisionEntity, DivisionViewModel.class))
                 .collect(Collectors.toList());
     }
+
+
 }

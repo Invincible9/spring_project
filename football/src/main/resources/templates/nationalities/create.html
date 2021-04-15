@@ -14,7 +14,7 @@
 
     <div class="row">
         <div class="col-lg-6 mx-auto">
-            <?php echo flash('add_nationality'); ?>
+            <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
         </div>
     </div>
     <div class="row">
