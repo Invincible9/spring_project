@@ -6,6 +6,7 @@ import bg.example.football.model.service.GameServiceModel;
 import bg.example.football.service.games.GameService;
 import bg.example.football.service.nationalities.NationalityService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,7 @@ public class GameController {
         this.modelMapper = modelMapper;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/create")
     public String create(Model model) {
         if(!model.containsAttribute("gameBindingModel")) {
@@ -40,6 +42,7 @@ public class GameController {
         return "games/create";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
     public String createProcess(@Valid @ModelAttribute("gameBindingModel")
                                         GameBindingModel gameBindingModel,
@@ -55,6 +58,7 @@ public class GameController {
         return "redirect:list";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
     public String list(Model model) {
         model.addAttribute("games", this.gameService.getAll());
@@ -63,6 +67,7 @@ public class GameController {
         return "games/list";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/onlineGames")
     public String onlineGames() {
 

@@ -5,6 +5,7 @@ import bg.example.football.model.service.SeasonServiceModel;
 import bg.example.football.service.divisions.DivisionService;
 import bg.example.football.service.seasons.SeasonService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +32,7 @@ public class SeasonController {
         this.divisionService = divisionService;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/create")
     public String create(Model model) {
         if(!model.containsAttribute("seasonBindingModel")) {
@@ -40,6 +42,7 @@ public class SeasonController {
         return "seasons/create";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
     public String createProcess(@Valid @ModelAttribute("seasonBindingModel")
                                             SeasonBindingModel seasonBindingModel,
@@ -55,6 +58,7 @@ public class SeasonController {
         return "redirect:list";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
     public String list(Model model) {
         model.addAttribute("seasons", this.seasonService.getAll());

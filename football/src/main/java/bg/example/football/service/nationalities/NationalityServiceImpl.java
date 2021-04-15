@@ -36,8 +36,19 @@ public class NationalityServiceImpl implements NationalityService {
     }
 
     @Override
-    public void edit(NationalityServiceModel nationalityServiceModel, int id) {
-
+    public boolean edit(NationalityServiceModel nationalityServiceModel, String id) throws IOException {
+        NationalityEntity nationality = this.nationalityRepository.findById(id).orElse(null);
+        if(!("").equals(nationalityServiceModel.getLogo().getOriginalFilename())) {
+            String url = this.cloudinaryService.uploadImage(nationalityServiceModel.getLogo());
+            nationality.setLogoUrl(url);
+        }
+        if(!nationality.getName().equals(nationalityServiceModel.getName())
+                    && this.getOneByName(nationalityServiceModel.getName()) != null) {
+            return false;
+        }
+        nationality.setName(nationalityServiceModel.getName());
+        this.nationalityRepository.save(nationality);
+        return true;
     }
 
     @Override
@@ -51,5 +62,17 @@ public class NationalityServiceImpl implements NationalityService {
     @Override
     public NationalityEntity getOneByName(String name) {
         return this.nationalityRepository.findByName(name).orElse(null);
+    }
+
+    @Override
+    public NationalityViewModel getOneById(String id) {
+        return this.nationalityRepository.findById(id).stream().map(nationalityEntity ->
+                this.modelMapper.map(nationalityEntity, NationalityViewModel.class)
+        ).findAny().orElse(null);
+    }
+
+    @Override
+    public void remove(String id) {
+        this.nationalityRepository.deleteById(id);
     }
 }

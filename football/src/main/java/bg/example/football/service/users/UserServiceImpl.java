@@ -132,9 +132,14 @@ public class UserServiceImpl implements UserService {
                 this.modelMapper.map(
                 this.findOneByEmail(userProfileServiceModel.getEmail()), UserEntity.class);
 
-        userEntity.setFullName(userProfileServiceModel.getFullName());
-        String url = this.cloudinaryService.uploadImage(userProfileServiceModel.getImage());
-        userEntity.setImageUrl(url);
+        if(userProfileServiceModel.getFullName() != null) {
+            userEntity.setFullName(userProfileServiceModel.getFullName());
+        }
+
+        if(!("").equals(userProfileServiceModel.getImage().getOriginalFilename())) {
+            String url = this.cloudinaryService.uploadImage(userProfileServiceModel.getImage());
+            userEntity.setImageUrl(url);
+        }
 
         this.userRepository.save(userEntity);
     }

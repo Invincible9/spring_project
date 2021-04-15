@@ -5,6 +5,7 @@ import bg.example.football.model.service.TeamServiceModel;
 import bg.example.football.service.divisions.DivisionService;
 import bg.example.football.service.teams.TeamService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,6 +34,7 @@ public class TeamController {
         this.divisionService = divisionService;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/create")
     public String create(Model model) {
         if(!model.containsAttribute("teamBindingModel")) {
@@ -42,6 +44,7 @@ public class TeamController {
         return "teams/create";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
     public String createProcess(@Valid @ModelAttribute("teamBindingModel")
                                         TeamBindingModel teamBindingModel,
@@ -57,6 +60,7 @@ public class TeamController {
         return "redirect:list";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
     public String list(Model model) {
         model.addAttribute("teams", this.teamService.getAll());

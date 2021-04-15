@@ -5,6 +5,7 @@ import bg.example.football.model.service.RoundServiceModel;
 import bg.example.football.service.rounds.RoundService;
 import bg.example.football.service.seasons.SeasonService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,6 +33,7 @@ public class RoundController {
         this.modelMapper = modelMapper;
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/create")
     public String create(Model model) {
         if(!model.containsAttribute("roundBindingModel")) {
@@ -41,6 +43,7 @@ public class RoundController {
         return "rounds/create";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
     public String createProcess(@Valid @ModelAttribute("roundBindingModel")
                                             RoundBindingModel roundBindingModel,
@@ -56,6 +59,7 @@ public class RoundController {
         return "redirect:list";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
     public String list(Model model) {
         model.addAttribute("rounds", this.roundService.getAll());

@@ -14,27 +14,30 @@
 
     <div class="row">
         <div class="col-lg-6 mx-auto">
-            <?php echo flash('add_nationality'); ?>
+<!--            <?php echo flash('add_nationality'); ?>-->
         </div>
     </div>
     <div class="row">
         <div class="col-md-6 mx-auto">
             <div class="card card-body bg-light mt-5">
-                <h2>Add nationality</h2>
-                <form th:object="${nationalityBindingModel}"  th:action="@{/nationalities/create}" method="POST" enctype="multipart/form-data">
+                <h2>Edit nationality</h2>
+                <form th:object="${nationalityBindingModel}" th:action="@{/nationalities/edit/(id = ${id})}" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="name">Name: <sup>*</sup></label>
-                        <input th:value="*{name}" type="text" id="name" name="name" class="form-control form-control-lg" value="">
+                        <label for="name">Change Name: <sup>*</sup></label>
+                        <input th:value="*{name}" type="text" id="name" name="name" class="form-control form-control-lg">
                         <span th:each="e : ${#fields.errors('name')}" th:text="${e}" class="invalid-feedback"></span>
                     </div>
                     <div class="form-group">
-                        <label for="logo">Logo: <sup>*</sup></label>
-                        <input th:value="*{logo}" type="file" id="logo" name="logo" class="form-control form-control-lg" value="">
+                        <label for="logo">Change Logo: <sup>*</sup></label>
+                        <input th:value="*{logo}" type="file" id="logo" name="logo" class="form-control form-control-lg">
                         <span th:each="e : ${#fields.errors('logo')}" th:text="${e}" class="invalid-feedback"></span>
+                    </div>
+                    <div class="form-group">
+                        <img th:src="*{logo}" width="20%" />
                     </div>
                     <div class="row">
                         <div class="col">
-                            <input type="submit" value="Add" class="btn btn-success col-lg-2 col-md-2 col-sm-2">
+                            <input type="submit" value="Edit" class="btn btn-success col-lg-2 col-md-2 col-sm-2">
                             <a class="btn btn-primary col-lg-2 col-md-2 col-sm-2" href="/nationalities/list">Back</a>
                         </div>
                     </div>

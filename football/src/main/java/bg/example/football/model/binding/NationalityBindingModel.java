@@ -3,14 +3,11 @@ package bg.example.football.model.binding;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
-
 public class NationalityBindingModel {
 
     @Length(min = 3, message = "Full Name length must be between 3 and 20 characters (inclusive 3 and 20).")
     private String name;
 
-    @NotNull
     private MultipartFile logo;
 
     public NationalityBindingModel() {

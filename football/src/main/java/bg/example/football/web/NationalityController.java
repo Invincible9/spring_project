@@ -5,13 +5,11 @@ import bg.example.football.model.service.NationalityServiceModel;
 import bg.example.football.model.view.NationalityViewModel;
 import bg.example.football.service.nationalities.NationalityService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -30,13 +28,15 @@ public class NationalityController {
         this.modelMapper = modelMapper;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
-    public String all(Model model) {
+    public String list(Model model) {
         List<NationalityViewModel> nationalities = this.nationalityService.getAll();
         model.addAttribute("nationalities", nationalities);
         return "nationalities/list";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/create")
     public String create(Model model) {
         if(!model.containsAttribute("nationalityBindingModel")) {
@@ -45,6 +45,7 @@ public class NationalityController {
         return "nationalities/create";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
     public String createProcess(@Valid @ModelAttribute("nationalityBindingModel")
                                  NationalityBindingModel nationalityBindingModel,
@@ -60,4 +61,39 @@ public class NationalityController {
 
         return "redirect:list";
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") String id, Model model) {
+        model.addAttribute("nameExist", false);
+        NationalityBindingModel nationalityBindingModel = this.modelMapper.map(this.nationalityService.getOneById(id), NationalityBindingModel.class);
+        model.addAttribute("nationalityBindingModel", nationalityBindingModel);
+        return "nationalities/edit";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/edit")
+    public String editProcess(@RequestParam("id") String id, @Valid @ModelAttribute("nationalityBindingModel")
+                                   NationalityBindingModel nationalityBindingModel,
+                       BindingResult bindingResult, RedirectAttributes redirectAttributes) throws IOException {
+
+        if(bindingResult.hasErrors() || !this.nationalityService.edit(
+                this.modelMapper.map(nationalityBindingModel, NationalityServiceModel.class), id)) {
+            redirectAttributes.addFlashAttribute("nameExist", true);
+            redirectAttributes.addFlashAttribute("nationalityBindingModel", nationalityBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.nationalityBindingModel", bindingResult);
+            return "redirect:/nationalities/edit/" + id;
+        }
+
+        return "redirect:/nationalities/list";
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/delete/{id}")
+    public String remove(@PathVariable("id") String id, RedirectAttributes redirectAttributes) {
+        this.nationalityService.remove(id);
+        redirectAttributes.addFlashAttribute("success", "Nationality removed successfully!");
+        return "redirect:/nationalities/list";
+    }
+
 }

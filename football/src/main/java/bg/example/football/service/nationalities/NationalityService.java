@@ -10,7 +10,9 @@ import java.util.List;
 
 public interface NationalityService {
     void create(NationalityServiceModel nationalityServiceModel) throws IOException;
-    void edit(NationalityServiceModel nationalityServiceModel, int id);
+    boolean edit(NationalityServiceModel nationalityServiceModel, String id) throws IOException;
     List<NationalityViewModel> getAll();
     NationalityEntity getOneByName(String name);
+    NationalityViewModel getOneById(String id);
+    void remove(String id);
 }
