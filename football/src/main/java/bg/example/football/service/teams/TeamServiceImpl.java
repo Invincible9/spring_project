@@ -3,6 +3,7 @@ package bg.example.football.service.teams;
 import bg.example.football.model.entities.DivisionEntity;
 import bg.example.football.model.entities.TeamEntity;
 import bg.example.football.model.service.TeamServiceModel;
+import bg.example.football.model.view.DivisionViewModel;
 import bg.example.football.model.view.TeamViewModel;
 import bg.example.football.repository.TeamRepository;
 import bg.example.football.service.CloudinaryService;
@@ -34,7 +35,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public void create(TeamServiceModel teamServiceModel) throws IOException {
         TeamEntity team = this.modelMapper.map(teamServiceModel, TeamEntity.class);
-        DivisionEntity division = this.divisionService.getOneByName(teamServiceModel.getDivisionName());
+        DivisionEntity division = this.modelMapper.map(this.divisionService.getOneById(teamServiceModel.getDivisionId()), DivisionEntity.class);
         team.setDivision(division);
         String url = this.cloudinaryService.uploadImage(teamServiceModel.getLogo());
         team.setLogoUrl(url);
@@ -42,9 +43,32 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public void edit(TeamServiceModel teamServiceModel, String id) throws IOException {
+        TeamEntity teamEntity = this.teamRepository.findById(id).orElse(null);
+        DivisionEntity divisionEntity = this.modelMapper.map(this.divisionService.getOneById(teamServiceModel.getDivisionId()), DivisionEntity.class);
+        if(!("").equals(teamServiceModel.getLogo().getOriginalFilename())) {
+            String url = this.cloudinaryService.uploadImage(teamServiceModel.getLogo());
+            teamEntity.setLogoUrl(url);
+        }
+        teamEntity.setDivision(divisionEntity);
+        teamEntity.setName(teamServiceModel.getName());
+        this.teamRepository.save(teamEntity);
+    }
+
+    @Override
+    public void remove(String id) {
+        this.teamRepository.deleteById(id);
+    }
+
+    @Override
     public List<TeamViewModel> getAll() {
         return this.teamRepository.findAll()
-                .stream().map(teamEntity ->  this.modelMapper.map(teamEntity, TeamViewModel.class))
+                .stream().map(teamEntity -> {
+                    TeamViewModel teamViewModel = this.modelMapper.map(teamEntity, TeamViewModel.class);
+                    DivisionViewModel divisionViewModel = this.divisionService.getOneById(teamEntity.getId());
+                    teamViewModel.setDivision(divisionViewModel);
+                    return teamViewModel;
+                })
                 .collect(Collectors.toList());
     }
 

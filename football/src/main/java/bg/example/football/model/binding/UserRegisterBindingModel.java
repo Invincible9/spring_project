@@ -3,9 +3,11 @@ package bg.example.football.model.binding;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 public class UserRegisterBindingModel {
 
+    @NotEmpty(message = "Email cannot be empty")
     @Email(message = "Enter valid email!")
     private String email;
 

@@ -1,6 +1,7 @@
 package bg.example.football.web;
 
 import bg.example.football.model.binding.DivisionBindingModel;
+import bg.example.football.model.binding.DivisionEditBindingModel;
 import bg.example.football.model.service.DivisionServiceModel;
 import bg.example.football.model.view.DivisionViewModel;
 import bg.example.football.service.divisions.DivisionService;
@@ -49,6 +50,7 @@ public class DivisionController {
 
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("divisionBindingModel", divisionBindingModel);
+            redirectAttributes.addFlashAttribute("nationalities",  this.nationalityService.getAll());
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.divisionBindingModel", bindingResult);
             return "redirect:create";
         }
@@ -69,7 +71,7 @@ public class DivisionController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") String id, Model model) {
         DivisionViewModel divisionViewModel = this.divisionService.getOneById(id);
-        DivisionBindingModel divisionBindingModel = this.modelMapper.map(divisionViewModel, DivisionBindingModel.class);
+        DivisionEditBindingModel divisionBindingModel = this.modelMapper.map(divisionViewModel, DivisionEditBindingModel.class);
         divisionBindingModel.setNationalityName(divisionViewModel.getNationalityViewModel().getName());
 
         model.addAttribute("divisionBindingModel", divisionBindingModel);
@@ -80,7 +82,7 @@ public class DivisionController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/edit")
     public String editProcess(@RequestParam("id") String id, @Valid @ModelAttribute("divisionBindingModel")
-            DivisionBindingModel divisionBindingModel,
+                                DivisionEditBindingModel divisionBindingModel,
                               BindingResult bindingResult, RedirectAttributes redirectAttributes) throws IOException {
 
         if(bindingResult.hasErrors()) {

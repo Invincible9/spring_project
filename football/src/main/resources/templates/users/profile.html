@@ -13,6 +13,11 @@
 
 <main>
     <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-6 mx-auto">
             <div class="card card-body bg-light mt-5">
                 <h2>Update your profile</h2>
@@ -20,7 +25,7 @@
                 <form th:object="${userProfileBindingModel}" th:action="@{/users/profile}" enctype="multipart/form-data" method="POST">
                     <div class="form-group">
                         <label for="fullName">Full Name: <sup>*</sup></label>
-                        <input th:value="*{fullName}" type="text" id="fullName" name="fullName" class="form-control form-control-lg">
+                        <input th:value="*{fullName}" th:errorclass="is-invalid" type="text" id="fullName" name="fullName" class="form-control form-control-lg">
                     </div>
 
                     <div class="form-group">

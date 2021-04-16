@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface TeamService {
     void create(TeamServiceModel teamServiceModel) throws IOException;
+    void edit(TeamServiceModel teamServiceModel, String id) throws IOException;
+    void remove(String id);
     List<TeamViewModel> getAll();
     TeamEntity getOneByName(String name);
     TeamViewModel getOneById(String id);

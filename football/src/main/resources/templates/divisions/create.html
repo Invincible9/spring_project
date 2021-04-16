@@ -23,17 +23,17 @@
                 <form th:object="${divisionBindingModel}" th:action="@{/divisions/create}" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for4="name">Name: <sup>*</sup></label>
-                        <input type="text" name="name" class="form-control form-control-lg" value="">
+                        <input type="text" name="name" class="form-control form-control-lg" th:errorclass="is-invalid">
                         <span th:each="e : ${#fields.errors('name')}" th:text="${e}" class="invalid-feedback"></span>
                     </div>
                     <div class="form-group">
                         <label for="logo">Logo: <sup>*</sup></label>
-                        <input type="file" id="logo" name="logo" class="form-control form-control-lg " value="">
+                        <input type="file" id="logo" name="logo" class="form-control form-control-lg" th:errorclass="is-invalid">
                         <span th:each="e : ${#fields.errors('logo')}" th:text="${e}" class="invalid-feedback"></span>
                     </div>
                     <div class="form-group">
                         <label for="nationalityName">Nationality: <sup>*</sup></label>
-                        <select class="form-control form-control-lg" name="nationalityName" id="nationalityName">
+                        <select class="form-control form-control-lg" th:errorclass="is-invalid" name="nationalityName" id="nationalityName">
                             <option value="">Choose</option>
                             <option th:each="n : ${nationalities}" th:object="${n}"
                                       th:text="*{name}" th:value="*{name}"></option>

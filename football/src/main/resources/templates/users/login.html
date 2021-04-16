@@ -17,23 +17,21 @@
                 <h2>Login</h2>
                 <p>Please fill in your credentials to log in</p>
                 <p>
-                    <a th:href="@{/oauth2/authorization/facebook}"
-                       class="btn btn-block btn-outline-primary">
-                        <i class="fab fa-facebook-f"></i>
+                    <a th:href="@{/oauth2/authorization/facebook}" class="btn btn-block btn-outline-primary"><i class="fab fa-facebook-f"></i>
                         Login via facebook
                     </a>
                 </p>
                 <hr>
-                <form th:action="@{/users/login}" method="POST">
+                <form th:object="${userLoginBindingModel}" th:action="@{/users/login}" method="POST">
                     <div class="form-group">
                         <label for="email">Email: <sup>*</sup></label>
-                        <input required type="email" id="email" minlength="1" name="email" class="form-control form-control-lg" value="">
-                        <span class="invalid-feedback"></span>
+                        <input  th:value="*{email}" id="email" th:errorclass="is-invalid" name="email" class="form-control form-control-lg">
+                        <span th:each="e : ${#fields.errors('email')}" th:text="${e}" class="invalid-feedback"></span>
                     </div>
                     <div class="form-group">
                         <label for="password">Password: <sup>*</sup></label>
-                        <input type="password" required minlength="3" id="password" name="password" class="form-control form-control-lg" value="">
-                        <span class="invalid-feedback"></span>
+                        <input th:value="*{password}" type="password" th:errorclass="is-invalid" id="password" name="password" class="form-control form-control-lg">
+                        <span th:each="e : ${#fields.errors('password')}" th:text="${e}" class="invalid-feedback"></span>
                     </div>
                     <div class="row">
                         <div class="col">

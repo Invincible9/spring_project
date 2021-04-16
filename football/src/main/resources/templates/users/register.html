@@ -10,13 +10,18 @@
     </nav>
 </header>
 
-<div class="row">
-    <div class="col-lg-6 mx-auto">
-        <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
-    </div>
-</div>
-
 <main>
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mx-auto">
+            <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-6 mx-auto">
             <div class="card card-body bg-light mt-5">
@@ -27,32 +32,28 @@
                         <label for="email">Email: <sup>*</sup></label>
                         <input th:value="*{email}"
                                th:errorclass="is-invalid"
-                               required accept="@"
-                               type="email" id="email" name="email" class="form-control form-control-lg" value="">
+                               type="text" id="email" name="email" class="form-control form-control-lg">
                         <span th:each="e : ${#fields.errors('email')}" th:text="${e}" class="invalid-feedback"></span>
                     </div>
                     <div class="form-group">
                         <label for="name">Full Name: <sup>*</sup></label>
                         <input th:value="*{fullName}"
                                th:errorclass="is-invalid"
-                               required minlength="5"
-                               type="text" id="name" name="fullName" class="form-control form-control-lg" value="">
+                               type="text" id="name" name="fullName" class="form-control form-control-lg">
                         <span th:each="e : ${#fields.errors('fullName')}" th:text="${e}" class="invalid-feedback"></span>
                     </div>
                     <div class="form-group">
                         <label for="password">Password: <sup>*</sup></label>
                         <input th:value="*{password}"
                                th:errorclass="is-invalid"
-                               required minlength="3"
-                               type="password" id="password" name="password" class="form-control form-control-lg" value="">
+                               type="password" id="password" name="password" class="form-control form-control-lg">
                         <span th:each="e : ${#fields.errors('password')}" th:text="${e}" class="invalid-feedback"></span>
                     </div>
                     <div class="form-group">
                         <label for="confirm_password">Confirm Password: <sup>*</sup></label>
                         <input th:value="*{confirmPassword}"
                                th:errorclass="is-invalid"
-                               required minlength="3"
-                               type="password" id="confirm_password" name="confirmPassword" class="form-control form-control-lg" value="">
+                               type="password" id="confirm_password" name="confirmPassword" class="form-control form-control-lg">
                         <span th:each="e : ${#fields.errors('confirmPassword')}" th:text="${e}" class="invalid-feedback"></span>
                     </div>
 

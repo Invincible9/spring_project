@@ -73,18 +73,17 @@ public class UserController {
 
         this.userService.register(this.modelMapper.map(
                 userRegisterBindingModel, UserRegisterServiceModel.class));
+        redirectAttributes.addFlashAttribute("success", "Registration successfully!");
         return "redirect:login";
     }
 
 
     @PostMapping("/login-error")
-    public String failedLogin(@ModelAttribute("email")
-                                      String email,
-                              RedirectAttributes attributes) {
-
-        attributes.addFlashAttribute("bad_credentials", true);
-        attributes.addFlashAttribute("email", email);
-
+    public String failedLogin(@Valid @ModelAttribute("userLoginBindingModel")
+                                     UserLoginBindingModel userLoginBindingModel,
+                              RedirectAttributes redirectAttributes, BindingResult bindingResult) {
+        redirectAttributes.addFlashAttribute("userLoginBindingModel", userLoginBindingModel);
+        redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userLoginBindingModel", bindingResult);
         return "redirect:login";
     }
 
@@ -104,10 +103,12 @@ public class UserController {
     @PostMapping("/profile")
     public String profileProcess(@Valid @ModelAttribute("userProfileBindingModel")
                                              UserProfileBindingModel userProfileBindingModel,
-                                 @AuthenticationPrincipal UserDetails principal) throws IOException {
+                                 @AuthenticationPrincipal UserDetails principal,
+                                 RedirectAttributes redirectAttributes) throws IOException {
 
         userProfileBindingModel.setEmail(principal.getUsername());
         this.userService.updateProfile(this.modelMapper.map(userProfileBindingModel, UserProfileServiceModel.class));
+        redirectAttributes.addFlashAttribute("success", "Profile updated successfully!");
         return "redirect:profile";
     }
 

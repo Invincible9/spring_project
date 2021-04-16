@@ -65,8 +65,12 @@ public class DivisionServiceImpl implements DivisionService {
     @Override
     public List<DivisionViewModel> getAll() {
         return this.divisionRepository.findAll()
-                .stream().map(divisionEntity ->
-                        this.modelMapper.map(divisionEntity, DivisionViewModel.class))
+                .stream().map(divisionEntity -> {
+                    DivisionViewModel divisionViewModel = this.modelMapper.map(divisionEntity, DivisionViewModel.class);
+                    NationalityViewModel nationalityViewModel = this.nationalityService.getOneById(divisionEntity.getNationality().getId());
+                    divisionViewModel.setNationalityViewModel(nationalityViewModel);
+                    return divisionViewModel;
+                })
                 .collect(Collectors.toList());
     }
 

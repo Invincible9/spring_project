@@ -1,6 +1,7 @@
 package bg.example.football.web;
 
 import bg.example.football.model.binding.NationalityBindingModel;
+import bg.example.football.model.binding.NationalityEditBindingModel;
 import bg.example.football.model.service.NationalityServiceModel;
 import bg.example.football.model.view.NationalityViewModel;
 import bg.example.football.service.nationalities.NationalityService;
@@ -66,7 +67,7 @@ public class NationalityController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") String id, Model model) {
         model.addAttribute("nameExist", false);
-        NationalityBindingModel nationalityBindingModel = this.modelMapper.map(this.nationalityService.getOneById(id), NationalityBindingModel.class);
+        NationalityEditBindingModel nationalityBindingModel = this.modelMapper.map(this.nationalityService.getOneById(id), NationalityEditBindingModel.class);
         model.addAttribute("nationalityBindingModel", nationalityBindingModel);
         return "nationalities/edit";
     }
@@ -74,7 +75,7 @@ public class NationalityController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/edit")
     public String editProcess(@RequestParam("id") String id, @Valid @ModelAttribute("nationalityBindingModel")
-                                   NationalityBindingModel nationalityBindingModel,
+                        NationalityEditBindingModel nationalityBindingModel,
                        BindingResult bindingResult, RedirectAttributes redirectAttributes) throws IOException {
 
         if(bindingResult.hasErrors() || !this.nationalityService.edit(

@@ -1,20 +1,21 @@
 package bg.example.football.model.binding;
 
+import bg.example.football.config.validation.ValidImage;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 
 public class TeamBindingModel {
 
     @Length(min = 3, message = "Name length must be between 3 and 20 characters (inclusive 3 and 20).")
     private String name;
 
-    @NotNull
+    @ValidImage
     private MultipartFile logo;
 
-    @NotNull(message = "Enter valid division name!")
-    private String divisionName;
+    @NotEmpty(message = "Enter valid division name!")
+    private String divisionId;
 
     public TeamBindingModel() {
     }
@@ -37,12 +38,12 @@ public class TeamBindingModel {
         return this;
     }
 
-    public String getDivisionName() {
-        return divisionName;
+    public String getDivisionId() {
+        return divisionId;
     }
 
-    public TeamBindingModel setDivisionName(String divisionName) {
-        this.divisionName = divisionName;
+    public TeamBindingModel setDivisionId(String divisionId) {
+        this.divisionId = divisionId;
         return this;
     }
 }
