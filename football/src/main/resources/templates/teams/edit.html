@@ -20,7 +20,7 @@
   <div class="row">
     <div class="col-lg-6 mx-auto">
       <div class="card card-body bg-light mt-5">
-        <h2>Add Team</h2>
+        <h2>Edit Team</h2>
         <form th:object="${teamBindingModel}" th:action="@{/teams/edit/(id = ${id})}" method="POST" enctype="multipart/form-data">
           <div class="form-group">
             <label for="name">Name: <sup>*</sup></label>

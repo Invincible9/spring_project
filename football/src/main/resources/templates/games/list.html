@@ -12,171 +12,182 @@
 
 <main>
 
+<div class="container body-content">
   <div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12">
-<!--      <?php echo flash('add_game'); ?>-->
-      <span id="other_errors"></span>
+    <div class="col-lg-6 mx-auto">
+      <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
     </div>
   </div>
+</div>
 
-  <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-    <hr />
+<th:block th:if="${games.isEmpty()}">
+  <div class="container body-content">
     <div class="row">
-      <div class="col-lg-8 mx-auto">
-        <p>Admin Settings</p>
-        <a class="btn btn-primary mt-2 mb-5" th:href="@{/games/create}">Add</a>
+      <div class="col-md-6 mb-3 mt-2">
+        <p>No results found <a class="btn btn-primary" href="/">Back</a></p>
       </div>
     </div>
-    <hr />
-  </th:block>
+  </div>
+</th:block>
 
+<th:block sec:authorize="hasRole('ROLE_ADMIN')">
+  <hr />
   <div class="row">
     <div class="col-lg-8 mx-auto">
-      <p>Today </p>
-      <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-        <div class="btn-group" role="group">
-          <button id="btnTodayGamesGr" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Games
-          </button>
-          <div class="dropdown-menu" aria-labelledby="btnTodayGamesGr">
-            <a class="dropdown-item" th:href="@{/games/onlineGames}">Online</a>
-            <a class="dropdown-item" th:href="@{/games/upcomingGames}">Upcoming</a>
-            <a class="dropdown-item" th:href="@{/games/finishedGames}">Finished</a>
-          </div>
-        </div>
-      </div>
+      <p>Admin Settings</p>
+      <a class="btn btn-primary mt-2 mb-5" th:href="@{/games/create}">Add</a>
     </div>
   </div>
   <hr />
+</th:block>
 
-  <div th:object="${searchBindingModel}" class="row">
-    <div class="col-lg-8 mx-auto">
-      <form action='filteredGames' method='get'>
-        <div class="row">
-
-          <div class="col-lg-2 col-md-2 col-sm-2 form-group">
-            <label for="nationalityName">Nationality: <sup>*</sup></label>
-            <select class="form-control" name="nationalityName" id="nationalityName">
-              <option value="">Choose</option>
-              <option th:each="n : ${nationalities}" th:object="${n}"
-                      th:text="*{name}" th:value="*{name}"></option>
-            </select>
-            <span th:each="e : ${#fields.errors('nationalityName')}" th:text="${e}" class="invalid-feedback"></span>
-          </div>
-
-          <div class="col-lg-2 col-md-2 col-sm-2 form-group">
-            <label for="divisionName">Division: <sup>*</sup></label>
-            <select class="form-control" name="divisionName" id="divisionName">
-              <option value="">Choose</option>
-            </select>
-            <span th:each="e : ${#fields.errors('divisionName')}" th:text="${e}" class="invalid-feedback"></span>
-          </div>
-
-          <div class="col-lg-2 col-md-2 col-sm-2 form-group">
-            <label for="seasonName">Season: <sup>*</sup></label>
-            <select class="form-control" name="seasonName" id="seasonName">
-              <option value="">Choose</option>
-            </select>
-            <span th:each="e : ${#fields.errors('seasonName')}" th:text="${e}" class="invalid-feedback"></span>
-          </div>
-
-          <div class="col-lg-2 col-md-2 col-sm-2 form-group">
-            <label for="roundName">Rounds: <sup>*</sup></label>
-            <select class="form-control" name="roundName" id="roundName">
-              <option value="">Choose</option>
-            </select>
-            <span th:each="e : ${#fields.errors('roundName')}" th:text="${e}" class="invalid-feedback"></span>
-          </div>
-
-          <div class="col-lg-2 col-md-2 col-sm-2 form-group">
-            <label for="status">Status: <sup>*</sup></label>
-            <select class="form-control" name="status" id="status">
-              <option value="">Choose</option>
-              <option th:each="s : ${T(bg.example.football.model.entities.enums.StatusName).values()}"
-                      th:text="${s}" th:value="${s}">Shirt</option>
-            </select>
-            <span th:each="e : ${#fields.errors('status')}" th:text="${e}" class="invalid-feedback"></span>
-          </div>
-
-          <div class="col-lg-2 col-md-2 col-sm-2 form-group">
-            <input type="submit" value="GO!" class="form-control bg bg-danger mt-4" />
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <h3 class="col-lg-8 mx-auto center-text" th:if="${games.isEmpty()}">No games found</h3>
-
-  <div class="row">
-    <div class="col-lg-8 mx-auto center-text">
-      <h3 class="mt-2 mb-4">Latest Games</h3>
-    </div>
-  </div>
-
-  <div th:each="g : ${games}" th:object="${g}" class="row">
-    <div class="col-lg-8 mx-auto">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#" th:text="*{round.getSeason().getDivision().getNationality().getName()}"></a></li>
-          <li class="breadcrumb-item"><a href="#" th:text="*{round.getSeason().getDivision().getName()}"></a></li>
-          <li class="breadcrumb-item active" aria-current="page" th:text="*{round.getSeason().getName()}"></li>
-          <li class="breadcrumb-item"><a href="#" th:text="|*{round.getName()} (*{status})|"></a></li>
-          <li class="breadcrumb-item"><a href="#" th:text="|Game date *{date}|"></a></li>
-        </ol>
-      </nav>
-
-      <div class="row mb-5">
-        <!-- blackWhite -->
-        <div class="col-lg-2 col-md-2 col-sm-2 text-center">
-          <img th:class="(${g.awayTeamGoals} < ${g.homeTeamGoals} ? 'img-responsive img-fluid blackWhite blackWhite' : 'img-responsive img-fluid blackWhite')" th:src="*{homeTeam.logoUrl}" alt="home team logo" />
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-          <strong th:text="*{homeTeam.name}"></strong>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 text-center">
-          <h3 th:text="*{homeTeamGoals}"></h3>
-        </div>
-        <div class="col-lg-1 col-md-1 col-sm-1 text-center">
-          <h3 th:text="*{awayTeamGoals}"></h3>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-          <strong th:text="*{awayTeam.name}"></strong>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 text-center">
-          <img th:class="(${g.awayTeamGoals} > ${g.homeTeamGoals} ? 'img-responsive img-fluid blackWhite' : 'img-responsive img-fluid')" th:src="*{awayTeam.logoUrl}" alt="away team logo" />
+<div class="row">
+  <div class="col-lg-8 mx-auto">
+    <p>Today </p>
+    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+      <div class="btn-group" role="group">
+        <button id="btnTodayGamesGr" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Games
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnTodayGamesGr">
+          <a class="dropdown-item" th:href="@{/games/onlineGames}">Online</a>
+          <a class="dropdown-item" th:href="@{/games/upcomingGames}">Upcoming</a>
+          <a class="dropdown-item" th:href="@{/games/finishedGames}">Finished</a>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<hr />
 
-      <a href="/games/details/" class="btn btn-primary mb-5 mt-1">Details</a>
-      <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-        <a href="/games/edit/" class="btn btn-warning mb-5 mt-1">Edit</a>
-        <button type="button" class="btn btn-danger mb-5 mt-1" data-toggle="modal" data-target="#deleteWarningModal<?php echo $value->id; ?>">
-          Delete
-        </button>
-        <!-- Modal -->
-        <div class="modal fade" id="deleteWarningModal<?php echo $value->id; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteWarningModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="deleteWarningModalLabel">Are you sure?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <span th:text="|Are you sure you want to delete game *{homeTeam} - *{awayTeam} ?|"></span>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="/games/delete/" class="btn btn-danger">Confirm</a>
-              </div>
+<div th:object="${searchBindingModel}" class="row">
+  <div class="col-lg-8 mx-auto">
+    <form action='filteredGames' method='get'>
+      <div class="row">
+
+        <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+          <label for="nationalityName">Nationality: <sup>*</sup></label>
+          <select class="form-control" name="nationalityName" id="nationalityName">
+            <option value="">Choose</option>
+            <option th:each="n : ${nationalities}" th:object="${n}"
+                    th:text="*{name}" th:value="*{name}"></option>
+          </select>
+          <span th:each="e : ${#fields.errors('nationalityName')}" th:text="${e}" class="invalid-feedback"></span>
+        </div>
+
+        <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+          <label for="divisionName">Division: <sup>*</sup></label>
+          <select class="form-control" name="divisionName" id="divisionName">
+            <option value="">Choose</option>
+          </select>
+          <span th:each="e : ${#fields.errors('divisionName')}" th:text="${e}" class="invalid-feedback"></span>
+        </div>
+
+        <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+          <label for="seasonName">Season: <sup>*</sup></label>
+          <select class="form-control" name="seasonName" id="seasonName">
+            <option value="">Choose</option>
+          </select>
+          <span th:each="e : ${#fields.errors('seasonName')}" th:text="${e}" class="invalid-feedback"></span>
+        </div>
+
+        <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+          <label for="roundName">Rounds: <sup>*</sup></label>
+          <select class="form-control" name="roundName" id="roundName">
+            <option value="">Choose</option>
+          </select>
+          <span th:each="e : ${#fields.errors('roundName')}" th:text="${e}" class="invalid-feedback"></span>
+        </div>
+
+        <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+          <label for="status">Status: <sup>*</sup></label>
+          <select class="form-control" name="status" id="status">
+            <option value="">Choose</option>
+            <option th:each="s : ${T(bg.example.football.model.entities.enums.StatusName).values()}"
+                    th:text="${s}" th:value="${s}">Shirt</option>
+          </select>
+          <span th:each="e : ${#fields.errors('status')}" th:text="${e}" class="invalid-feedback"></span>
+        </div>
+
+        <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+          <input type="submit" value="GO!" class="form-control bg bg-danger mt-4" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<h3 class="col-lg-8 mx-auto center-text" th:if="${games.isEmpty()}">No games found</h3>
+
+<div class="row">
+  <div class="col-lg-8 mx-auto center-text">
+    <h3 class="mt-2 mb-4">Latest Games</h3>
+  </div>
+</div>
+
+<div th:each="g : ${games}" th:object="${g}" class="row">
+  <div class="col-lg-8 mx-auto">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#" th:text="*{round.getSeason().getDivision().getNationality().getName()}"></a></li>
+        <li class="breadcrumb-item"><a href="#" th:text="*{round.getSeason().getDivision().getName()}"></a></li>
+        <li class="breadcrumb-item active" aria-current="page" th:text="*{round.getSeason().getName()}"></li>
+        <li class="breadcrumb-item"><a href="#" th:text="|*{round.getName()} (*{status})|"></a></li>
+        <li class="breadcrumb-item"><a href="#" th:text="|Game date *{date}|"></a></li>
+      </ol>
+    </nav>
+
+    <div class="row mb-5">
+      <!-- blackWhite -->
+      <div class="col-lg-2 col-md-2 col-sm-2 text-center">
+        <img th:class="(${g.awayTeamGoals} < ${g.homeTeamGoals} ? 'img-responsive img-fluid blackWhite blackWhite' : 'img-responsive img-fluid blackWhite')" th:src="*{homeTeam.logoUrl}" alt="home team logo" />
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 text-center">
+        <strong th:text="*{homeTeam.name}"></strong>
+      </div>
+      <div class="col-lg-1 col-md-1 col-sm-1 text-center">
+        <h3 th:text="*{homeTeamGoals}"></h3>
+      </div>
+      <div class="col-lg-1 col-md-1 col-sm-1 text-center">
+        <h3 th:text="*{awayTeamGoals}"></h3>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 text-center">
+        <strong th:text="*{awayTeam.name}"></strong>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 text-center">
+        <img th:class="(${g.awayTeamGoals} > ${g.homeTeamGoals} ? 'img-responsive img-fluid blackWhite' : 'img-responsive img-fluid')" th:src="*{awayTeam.logoUrl}" alt="away team logo" />
+      </div>
+    </div>
+
+    <a href="/games/details/" class="btn btn-primary mb-5 mt-1">Details</a>
+    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+      <a href="/games/edit/" class="btn btn-warning mb-5 mt-1">Edit</a>
+      <button type="button" class="btn btn-danger mb-5 mt-1" data-toggle="modal" data-target="#deleteWarningModal<?php echo $value->id; ?>">
+        Delete
+      </button>
+      <!-- Modal -->
+      <div class="modal fade" id="deleteWarningModal<?php echo $value->id; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteWarningModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteWarningModalLabel">Are you sure?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <span th:text="|Are you sure you want to delete game *{homeTeam} - *{awayTeam} ?|"></span>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <a href="/games/delete/" class="btn btn-danger">Confirm</a>
             </div>
           </div>
         </div>
-      </th:block>
-    </div>
+      </div>
+    </th:block>
   </div>
+</div>
 
 
 <!--<a href="/games/list/<?php echo $nextPage; ?>" class="btn btn-primary mb-5 mt-3">Next</a>-->

@@ -12,63 +12,75 @@
 
 <main>
 
+<div class="container body-content">
   <div class="row">
-    <div class="col-lg-8 mx-auto">
-<!--      <?php echo flash('add_season'); ?>-->
-
-<!--      <?php if (count($data) === 0) : ?>-->
-      <p>No results found <a class="btn btn-primary" href="/">Back</a></p>
-<!--      <?php endif ?>-->
+    <div class="col-lg-6 mx-auto">
+      <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
     </div>
   </div>
+</div>
 
-  <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+<th:block th:if="${seasons.isEmpty()}">
+  <div class="container body-content">
     <div class="row">
-      <div class="col-lg-8 mx-auto">
+      <div class="col-md-6 mb-3 mt-2">
+        <p>No results found <a class="btn btn-primary" href="/">Back</a></p>
+      </div>
+    </div>
+  </div>
+</th:block>
+
+<th:block sec:authorize="hasRole('ROLE_ADMIN')">
+  <div class="container body-content">
+    <div class="row">
+      <div class="col-md-6 mb-3 mt-2">
         <a class="btn btn-primary mt-1 mb-58" th:href="@{/seasons/create}">Add</a>
       </div>
     </div>
-  </th:block>>
+  </div>
+</th:block>>
 
-  <div th:each="s : ${seasons}" th:object="${s}" class="row card-group">
+<div class="container body-content">
+  <div class="row">
+    <th:block th:each="s : ${seasons}" th:object="${s}">
+      <div class="col-md-4 mb-5 mt-1">
+          <p th:text="|Season: *{name}|"></p>
+          <p th:text="|Start Date: *{startDate}|"></p>
+          <p th:text="|End Date: *{endDate}|"></p>
 
-    <div class="col-lg-8 mx-auto">
-      <p th:text="|Season: *{name}|"></p>
-      <p th:text="|Start Date: *{startDate}|"></p>
-      <p th:text="|End Date: *{endDate}|"></p>
-
-      <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-        <a href="/seasons/edit/" class="btn btn-warning mb-5 mt-1">Edit</a>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-danger mb-5 mt-1" data-toggle="modal" data-target="#deleteWarningModal<?php echo $value->id; ?>">
-          Delete
-        </button>
-        <!-- Modal -->
-        <div class="modal fade" id="deleteWarningModal<?php echo $value->id; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteWarningModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="deleteWarningModalLabel">Are you sure?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <span th:text="|Are you sure you want to delete season *{name} ?|"></span>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a href="/seasons/delete/" class="btn btn-danger">Confirm</a>
+          <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+            <div class="pull-left">
+              <a href="/seasons/edit/" class="btn btn-warning">Edit</a>
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteWarningModal<?php echo $value->id; ?>">
+                Delete
+              </button>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="deleteWarningModal<?php echo $value->id; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteWarningModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="deleteWarningModalLabel">Are you sure?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <span th:text="|Are you sure you want to delete season *{name} ?|"></span>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a href="/seasons/delete/" class="btn btn-danger">Confirm</a>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </th:block>
-    </div>
-  </div>
-  <div class="row">
-  </div>
-
+        </th:block>
+      </div>
+  </th:block>
+</div>
+</div>
 <!--  <a href="/seasons/list/<?php echo $nextPage; ?>" class="btn btn-primary mb-5 mt-1">Next</a>-->
 <!--  <a href="/seasons/list/<?php echo $prevPage; ?>" class="btn btn-primary mb-5 mt-1">Prev</a>-->
 
