@@ -3,25 +3,26 @@ package bg.example.football.model.binding;
 import bg.example.football.model.entities.enums.StatusName;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public class GameBindingModel {
 
-    @NotNull(message = "Enter valid nationality name!")
+    @NotEmpty(message = "Enter valid nationality name!")
     private String homeTeamNationality;
-    @NotNull(message = "Enter valid nationality name!")
+    @NotEmpty(message = "Enter valid nationality name!")
     private String awayTeamNationality;
 
-    @NotNull(message = "Enter valid division name!")
+    @NotEmpty(message = "Enter valid division name!")
     private String homeTeamDivision;
-    @NotNull(message = "Enter valid division name!")
+    @NotEmpty(message = "Enter valid division name!")
     private String awayTeamDivision;
 
-    @NotNull(message = "Enter valid team name!")
+    @NotEmpty(message = "Enter valid team name!")
     private String homeTeam;
 
-    @NotNull(message = "Enter valid team name!")
+    @NotEmpty(message = "Enter valid team name!")
     private String awayTeam;
 
     @NotNull
@@ -61,13 +62,13 @@ public class GameBindingModel {
     private Integer awayTeamPossession;
     @NotNull
     private String winner;
-    @NotNull
+    @NotEmpty(message = "Enter valid nationality name!")
     private String nationalityName;
-    @NotNull
+    @NotEmpty(message = "Enter valid division name!")
     private String divisionName;
-    @NotNull
+    @NotEmpty(message = "Enter valid season name!")
     private String seasonName;
-    @NotNull
+    @NotEmpty(message = "Enter valid round name!")
     private String roundName;
 
     @NotNull(message = "Enter valid status name!")

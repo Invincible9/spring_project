@@ -1,15 +1,13 @@
 package bg.example.football.model.view;
 
-import bg.example.football.model.entities.RoundEntity;
-import bg.example.football.model.entities.TeamEntity;
 import bg.example.football.model.entities.enums.StatusName;
 
 import java.time.LocalDate;
 
-public class GameViewModel {
+public class GameViewModel extends BaseViewModel {
 
-    private TeamEntity homeTeam;
-    private TeamEntity awayTeam;
+    private TeamViewModel homeTeamViewModel;
+    private TeamViewModel awayTeamViewModel;
     private LocalDate date;
 
     private Integer homeTeamGoals;
@@ -33,27 +31,27 @@ public class GameViewModel {
     private Integer awayTeamPossession;
 
     private String winner;
-    private RoundEntity round;
+    private RoundViewModel roundViewModel;
     private StatusName status;
 
     public GameViewModel() {
     }
 
-    public TeamEntity getHomeTeam() {
-        return homeTeam;
+    public TeamViewModel getHomeTeamViewModel() {
+        return homeTeamViewModel;
     }
 
-    public GameViewModel setHomeTeam(TeamEntity homeTeam) {
-        this.homeTeam = homeTeam;
+    public GameViewModel setHomeTeamViewModel(TeamViewModel homeTeamViewModel) {
+        this.homeTeamViewModel = homeTeamViewModel;
         return this;
     }
 
-    public TeamEntity getAwayTeam() {
-        return awayTeam;
+    public TeamViewModel getAwayTeamViewModel() {
+        return awayTeamViewModel;
     }
 
-    public GameViewModel setAwayTeam(TeamEntity awayTeam) {
-        this.awayTeam = awayTeam;
+    public GameViewModel setAwayTeamViewModel(TeamViewModel awayTeamViewModel) {
+        this.awayTeamViewModel = awayTeamViewModel;
         return this;
     }
 
@@ -219,12 +217,12 @@ public class GameViewModel {
         return this;
     }
 
-    public RoundEntity getRound() {
-        return round;
+    public RoundViewModel getRoundViewModel() {
+        return roundViewModel;
     }
 
-    public GameViewModel setRound(RoundEntity round) {
-        this.round = round;
+    public GameViewModel setRoundViewModel(RoundViewModel roundViewModel) {
+        this.roundViewModel = roundViewModel;
         return this;
     }
 

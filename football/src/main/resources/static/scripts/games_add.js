@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     // when choosing nationality then the divisions must appear
     $('#homeTeamNationality').on('change', function() {
         let homeTeamNationalityId = $(this).val();

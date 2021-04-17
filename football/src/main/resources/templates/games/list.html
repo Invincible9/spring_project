@@ -129,10 +129,10 @@
   <div class="col-lg-8 mx-auto">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#" th:text="*{round.getSeason().getDivision().getNationality().getName()}"></a></li>
-        <li class="breadcrumb-item"><a href="#" th:text="*{round.getSeason().getDivision().getName()}"></a></li>
-        <li class="breadcrumb-item active" aria-current="page" th:text="*{round.getSeason().getName()}"></li>
-        <li class="breadcrumb-item"><a href="#" th:text="|*{round.getName()} (*{status})|"></a></li>
+        <li class="breadcrumb-item"><a href="#" th:text="*{roundViewModel.getSeasonViewModel().getDivision().getNationalityViewModel().getName()}"></a></li>
+        <li class="breadcrumb-item"><a href="#" th:text="*{roundViewModel.getSeasonViewModel().getName()}"></a></li>
+        <li class="breadcrumb-item active" aria-current="page" th:text="*{roundViewModel.getSeasonViewModel().getName()}"></li>
+        <li class="breadcrumb-item"><a href="#" th:text="|*{roundViewModel.getName()} (*{status})|"></a></li>
         <li class="breadcrumb-item"><a href="#" th:text="|Game date *{date}|"></a></li>
       </ol>
     </nav>
@@ -140,10 +140,10 @@
     <div class="row mb-5">
       <!-- blackWhite -->
       <div class="col-lg-2 col-md-2 col-sm-2 text-center">
-        <img th:class="(${g.awayTeamGoals} < ${g.homeTeamGoals} ? 'img-responsive img-fluid blackWhite blackWhite' : 'img-responsive img-fluid blackWhite')" th:src="*{homeTeam.logoUrl}" alt="home team logo" />
+        <img th:class="(${g.awayTeamGoals} < ${g.homeTeamGoals} ? 'img-responsive img-fluid blackWhite blackWhite' : 'img-responsive img-fluid blackWhite')" th:src="*{homeTeamViewModel.logoUrl}" alt="home team logo" />
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-        <strong th:text="*{homeTeam.name}"></strong>
+        <strong th:text="*{homeTeamViewModel.name}"></strong>
       </div>
       <div class="col-lg-1 col-md-1 col-sm-1 text-center">
         <h3 th:text="*{homeTeamGoals}"></h3>
@@ -152,16 +152,16 @@
         <h3 th:text="*{awayTeamGoals}"></h3>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 text-center">
-        <strong th:text="*{awayTeam.name}"></strong>
+        <strong th:text="*{awayTeamViewModel.name}"></strong>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 text-center">
-        <img th:class="(${g.awayTeamGoals} > ${g.homeTeamGoals} ? 'img-responsive img-fluid blackWhite' : 'img-responsive img-fluid')" th:src="*{awayTeam.logoUrl}" alt="away team logo" />
+        <img th:class="(${g.awayTeamGoals} > ${g.homeTeamGoals} ? 'img-responsive img-fluid blackWhite' : 'img-responsive img-fluid')" th:src="*{awayTeamViewModel.logoUrl}" alt="away team logo" />
       </div>
     </div>
 
-    <a href="/games/details/" class="btn btn-primary mb-5 mt-1">Details</a>
+    <a th:href="@{/games/details/{id}(id = *{id})}" class="btn btn-primary mb-5 mt-1">Details</a>
     <th:block sec:authorize="hasRole('ROLE_ADMIN')">
-      <a href="/games/edit/" class="btn btn-warning mb-5 mt-1">Edit</a>
+      <a th:href="@{/games/edit/{id}(id = *{id})}" class="btn btn-warning mb-5 mt-1">Edit</a>
       <button type="button" class="btn btn-danger mb-5 mt-1" data-toggle="modal" th:data-target="'#deleteWarningModal' + *{id}">
         Delete
       </button>
@@ -176,11 +176,11 @@
               </button>
             </div>
             <div class="modal-body">
-              <span th:text="|Are you sure you want to delete game *{homeTeam} - *{awayTeam} ?|"></span>
+              <span th:text="|Are you sure you want to delete game *{homeTeamViewModel.getName()} - *{awayTeamViewModel.getName()} ?|"></span>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <a href="/games/delete/" class="btn btn-danger">Confirm</a>
+              <a th:href="@{/games/delete/{id}(id = *{id})}" class="btn btn-danger">Confirm</a>
             </div>
           </div>
         </div>
