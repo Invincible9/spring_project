@@ -4,6 +4,7 @@ import bg.example.football.model.entities.enums.StatusName;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -12,8 +13,8 @@ public class RoundServiceModel {
     @Length(min = 3, message = "Name length must be between 3 and 20 characters (inclusive 3 and 20).")
     private String name;
 
-    @NotNull(message = "Enter valid season name!")
-    private String seasonName;
+    @NotEmpty(message = "Enter valid season name!")
+    private String seasonId;
 
     @NotNull(message = "Enter valid status name!")
     private StatusName status;
@@ -38,12 +39,12 @@ public class RoundServiceModel {
         return this;
     }
 
-    public String getSeasonName() {
-        return seasonName;
+    public String getSeasonId() {
+        return seasonId;
     }
 
-    public RoundServiceModel setSeasonName(String seasonName) {
-        this.seasonName = seasonName;
+    public RoundServiceModel setSeasonId(String seasonId) {
+        this.seasonId = seasonId;
         return this;
     }
 

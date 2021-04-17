@@ -50,14 +50,14 @@
 
           <th:block sec:authorize="hasRole('ROLE_ADMIN')">
             <div class="pull-left">
-              <a href="/seasons/edit/" class="btn btn-warning">Edit</a>
+              <a th:href="@{/seasons/edit/{id}(id = *{id})}" class="btn btn-warning">Edit</a>
               <!-- Button trigger modal -->
-              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteWarningModal<?php echo $value->id; ?>">
+              <button type="button" class="btn btn-danger" data-toggle="modal" th:data-target="'#deleteWarningModal' + *{id}">
                 Delete
               </button>
             </div>
             <!-- Modal -->
-            <div class="modal fade" id="deleteWarningModal<?php echo $value->id; ?>" tabindex="-1" role="dialog" aria-labelledby="deleteWarningModalLabel" aria-hidden="true">
+            <div class="modal fade" th:id="'deleteWarningModal' + *{id}" tabindex="-1" role="dialog" aria-labelledby="deleteWarningModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -71,7 +71,7 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <a href="/seasons/delete/" class="btn btn-danger">Confirm</a>
+                    <a th:href="@{/seasons/delete/{id}(id = *{id})}" class="btn btn-danger">Confirm</a>
                   </div>
                 </div>
               </div>

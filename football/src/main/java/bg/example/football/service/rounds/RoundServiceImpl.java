@@ -31,14 +31,32 @@ public class RoundServiceImpl implements RoundService {
     @Override
     public void create(RoundServiceModel roundServiceModel) {
         RoundEntity roundEntity = this.modelMapper.map(roundServiceModel, RoundEntity.class);
-        SeasonEntity seasonEntity = this.seasonService.getOneByName(roundServiceModel.getSeasonName());
+        SeasonEntity seasonEntity =
+                this.modelMapper.map(
+                        this.seasonService.getOneById(roundServiceModel.getSeasonId()),
+                        SeasonEntity.class);
         roundEntity.setSeason(seasonEntity);
         this.roundRepository.save(roundEntity);
     }
 
     @Override
+    public void edit(RoundServiceModel roundServiceModel, String id) {
+        RoundEntity roundEntity = this.roundRepository.findById(id).orElse(null);
+        SeasonEntity seasonEntity = this.modelMapper.map(this.seasonService.getOneById(roundServiceModel.getSeasonId()), SeasonEntity.class);
+        this.modelMapper.map(roundServiceModel, roundEntity);
+        roundEntity.setSeason(seasonEntity);
+        roundEntity.setId(id);
+        this.roundRepository.save(roundEntity);
+    }
+
+    @Override
+    public void remove(String id) {
+        this.roundRepository.deleteById(id);
+    }
+
+    @Override
     public List<RoundViewModel> getAll() {
-        var all = this.roundRepository.findAll()
+        return this.roundRepository.findAll()
                 .stream().map(roundEntity -> {
                     RoundViewModel roundViewModel = this.modelMapper.map(roundEntity, RoundViewModel.class);
                     SeasonViewModel seasonViewModel = this.seasonService.getOneById(roundEntity.getSeason().getId());
@@ -46,7 +64,6 @@ public class RoundServiceImpl implements RoundService {
                     return roundViewModel;
                 })
                 .collect(Collectors.toList());
-        return all;
     }
 
     @Override
@@ -57,8 +74,12 @@ public class RoundServiceImpl implements RoundService {
     @Override
     public RoundViewModel getOneById(String id) {
         return this.roundRepository.findById(id)
-                .stream().map(roundEntity ->
-                        this.modelMapper.map(roundEntity, RoundViewModel.class))
+                .stream().map(roundEntity -> {
+                    RoundViewModel roundViewModel = this.modelMapper.map(roundEntity, RoundViewModel.class);
+                    SeasonViewModel seasonViewModel = this.seasonService.getOneById(roundEntity.getSeason().getId());
+                    roundViewModel.setSeasonViewModel(seasonViewModel);
+                    return roundViewModel;
+                })
                 .findFirst().orElse(null);
     }
 

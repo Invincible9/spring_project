@@ -3,6 +3,7 @@ package bg.example.football.model.service;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -10,8 +11,8 @@ public class SeasonServiceModel {
     @Length(min = 3, message = "Name length must be between 3 and 20 characters (inclusive 3 and 20).")
     private String name;
 
-    @NotNull(message = "Enter valid division name!")
-    private String divisionName;
+    @NotEmpty(message = "Enter valid division name!")
+    private String divisionId;
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -33,12 +34,12 @@ public class SeasonServiceModel {
         return this;
     }
 
-    public String getDivisionName() {
-        return divisionName;
+    public String getDivisionId() {
+        return divisionId;
     }
 
-    public SeasonServiceModel setDivisionName(String divisionName) {
-        this.divisionName = divisionName;
+    public SeasonServiceModel setDivisionId(String divisionId) {
+        this.divisionId = divisionId;
         return this;
     }
 

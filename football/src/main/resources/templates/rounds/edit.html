@@ -14,8 +14,8 @@
   <div class="row">
     <div class="col-md-6 mx-auto">
       <div class="card card-body bg-light mt-5">
-        <h2>Add Round</h2>
-        <form th:object="${roundBindingModel}" th:action="@{/rounds/create}" method="POST">
+        <h2>Edit Round</h2>
+        <form th:object="${roundBindingModel}" th:action="@{/rounds/edit/(id = ${id})}" method="POST">
           <div class="form-group">
             <label for="name">Name: <sup>*</sup></label>
             <input type="text" name="name" id="name" th:errorclass="is-invalid" class="form-control form-control-lg" th:value="*{name}">
@@ -54,7 +54,7 @@
           </div>
           <div class="row">
             <div class="col">
-              <input type="submit" value="Add" class="btn btn-success col-lg-2 col-md-2 col-sm-2">
+              <input type="submit" value="Edit" class="btn btn-success col-lg-2 col-md-2 col-sm-2">
               <a class="btn btn-primary col-lg-2 col-md-2 col-sm-2" href="/rounds/list">Back</a>
             </div>
           </div>

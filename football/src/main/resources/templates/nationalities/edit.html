@@ -23,12 +23,12 @@
                 <h2>Edit nationality</h2>
                 <form th:object="${nationalityBindingModel}" th:action="@{/nationalities/edit/(id = ${id})}" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="name">Change Name: <sup>*</sup></label>
+                        <label for="name">Name: <sup>*</sup></label>
                         <input th:value="*{name}" type="text" id="name" th:errorclass="is-invalid" name="name" class="form-control form-control-lg">
                         <span th:each="e : ${#fields.errors('name')}" th:text="${e}" class="invalid-feedback"></span>
                     </div>
                     <div class="form-group">
-                        <label for="logo">Change Logo: <sup>*</sup></label>
+                        <label for="logo">Logo: <sup>*</sup></label>
                         <input th:value="*{logo}" type="file" id="logo" name="logo" class="form-control form-control-lg">
                         <span th:each="e : ${#fields.errors('logo')}" th:text="${e}" class="invalid-feedback"></span>
                     </div>

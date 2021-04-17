@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface RoundService {
     void create(RoundServiceModel roundServiceModel);
+    void edit(RoundServiceModel roundServiceModel, String id);
+    void remove(String id);
     List<RoundViewModel> getAll();
     RoundEntity getOneByName(String name);
     RoundViewModel getOneById(String id);

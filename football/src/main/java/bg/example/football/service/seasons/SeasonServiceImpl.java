@@ -31,9 +31,24 @@ public class SeasonServiceImpl implements SeasonService {
     @Override
     public void create(SeasonServiceModel seasonServiceModel) {
         SeasonEntity seasonEntity = this.modelMapper.map(seasonServiceModel, SeasonEntity.class);
-        DivisionEntity divisionEntity = this.divisionService.getOneByName(seasonServiceModel.getDivisionName());
+        DivisionEntity divisionEntity = this.modelMapper.map(this.divisionService.getOneById(seasonServiceModel.getDivisionId()), DivisionEntity.class);
         seasonEntity.setDivision(divisionEntity);
         this.seasonRepository.save(seasonEntity);
+    }
+
+    @Override
+    public void edit(SeasonServiceModel seasonServiceModel, String id) {
+        SeasonEntity seasonEntity = this.modelMapper.map(seasonServiceModel, SeasonEntity.class);
+        DivisionEntity divisionEntity = this.modelMapper.map(this.divisionService.getOneById(seasonServiceModel.getDivisionId()),
+                        DivisionEntity.class);
+        seasonEntity.setDivision(divisionEntity);
+        seasonEntity.setId(id);
+        this.seasonRepository.save(seasonEntity);
+    }
+
+    @Override
+    public void remove(String id) {
+        this.seasonRepository.deleteById(id);
     }
 
     @Override
@@ -52,8 +67,12 @@ public class SeasonServiceImpl implements SeasonService {
     @Override
     public SeasonViewModel getOneById(String id) {
         return this.seasonRepository.findById(id)
-                .stream().map(seasonEntity ->
-                        this.modelMapper.map(seasonEntity, SeasonViewModel.class))
+                .stream().map(seasonEntity -> {
+                    SeasonViewModel seasonViewModel = this.modelMapper.map(seasonEntity, SeasonViewModel.class);
+                    DivisionViewModel divisionViewModel = this.divisionService.getOneById(seasonEntity.getDivision().getId());
+                    seasonViewModel.setDivision(divisionViewModel);
+                    return seasonViewModel;
+                })
                 .findFirst().orElse(null);
     }
 
